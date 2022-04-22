@@ -13,10 +13,15 @@ export const getTypeOrmModuleOptions = (
     username: config.getDatabaseUser(),
     password: config.getDatabasePassword(),
     database: config.getDatabaseName(),
-    entities: [],
+    entities: ['src/**/*.ormEntity.ts'],
     autoLoadEntities: true,
     logging: ['error', 'migration', 'schema'],
     synchronize: config.getDatabaseSync(),
+    migrations: ['src/**/migrations/*.ts'],
+    migrationsTableName: 'migrations',
+    cli: {
+      migrationsDir: 'src/infrastructure/database/migrations',
+    },
   } as TypeOrmModuleOptions;
 };
 
