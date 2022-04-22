@@ -13,7 +13,7 @@ export const getTypeOrmModuleOptions = (
     username: config.getDatabaseUser(),
     password: config.getDatabasePassword(),
     database: config.getDatabaseName(),
-    entities: ['src/**/*.ormEntity.ts'],
+    entities: ['src/**/*.orm-entity.ts'],
     autoLoadEntities: true,
     logging: ['error', 'migration', 'schema'],
     synchronize: config.getDatabaseSync(),
