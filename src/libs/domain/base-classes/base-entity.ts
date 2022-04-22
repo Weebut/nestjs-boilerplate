@@ -1,3 +1,4 @@
+import { convertPropsToObject } from 'src/libs/utils/convert-props-to-object.util';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface BaseEntityProps {
@@ -77,6 +78,19 @@ export abstract class Entity<EntityProps> {
       ...this.props,
     };
     return Object.freeze(propsCopy);
+  }
+
+  public toObject(): unknown {
+    const plainProps = convertPropsToObject(this.props);
+
+    const result = {
+      id: this._id,
+      createdAt: this._createdAt,
+      updatedAt: this._updatedAt,
+      ...plainProps,
+    };
+
+    return Object.freeze(result);
   }
 
   public abstract validate(): void;
