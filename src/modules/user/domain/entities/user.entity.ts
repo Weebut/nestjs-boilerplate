@@ -2,7 +2,7 @@ import { Entity } from 'src/libs/domain/base-classes/base-entity';
 import { UserBoos } from './user.type';
 
 export interface CreateUserProps {
-  foo: any;
+  foo: string;
 }
 
 export interface UserProps extends CreateUserProps {
