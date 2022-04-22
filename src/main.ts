@@ -1,5 +1,5 @@
 import { v1 } from '@Configs/versions/v1';
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { config } from 'dotenv';
 import { AppModule } from './app.module';
@@ -12,6 +12,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: v1 });
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(port, () => console.log('Listening to port', port));
 }
