@@ -1,5 +1,5 @@
-import { Logger } from '@Libs/structure/domain/ports/logger.port';
-import { UnitOfWorkPort } from '@Libs/structure/domain/ports/unit-of-work.port';
+import { Logger } from '@libs/structure/domain/ports/logger.port';
+import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';
 import { EntityTarget, getConnection, QueryRunner, Repository } from 'typeorm';
 import { IsolationLevel } from 'typeorm/driver/types/IsolationLevel';
 

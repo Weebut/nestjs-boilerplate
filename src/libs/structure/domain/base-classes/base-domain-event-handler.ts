@@ -1,8 +1,8 @@
-import { BaseDomainEvent } from '@Libs/structure/domain/base-classes/base-domain-event';
+import { BaseDomainEvent } from '@libs/structure/domain/base-classes/base-domain-event';
 import {
   BaseDomainEventClass,
   DomainEventsPubSub,
-} from '@Libs/structure/domain/pubsub/domain-events.pubsub';
+} from '@libs/structure/domain/pubsub/domain-events.pubsub';
 
 export abstract class BaseDomainEventHandler {
   constructor(private readonly event: BaseDomainEventClass) {}

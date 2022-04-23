@@ -1,5 +1,5 @@
-import { BaseEntity } from '@Libs/structure/domain/base-classes/base-entity';
-import { BaseValueObject } from '@Libs/structure/domain/base-classes/base-value-object';
+import { BaseEntity } from '@libs/structure/domain/base-classes/base-entity';
+import { BaseValueObject } from '@libs/structure/domain/base-classes/base-value-object';
 
 function isEntity(obj: unknown): obj is BaseEntity<unknown> {
   /**

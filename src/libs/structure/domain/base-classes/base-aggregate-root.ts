@@ -1,6 +1,6 @@
-import { BaseDomainEvent } from '@Libs/structure/domain/base-classes/base-domain-event';
-import { BaseEntity } from '@Libs/structure/domain/base-classes/base-entity';
-import { DomainEventsPubSub } from '@Libs/structure/domain/pubsub/domain-events.pubsub';
+import { BaseDomainEvent } from '@libs/structure/domain/base-classes/base-domain-event';
+import { BaseEntity } from '@libs/structure/domain/base-classes/base-entity';
+import { DomainEventsPubSub } from '@libs/structure/domain/pubsub/domain-events.pubsub';
 
 export abstract class BaseAggregateRoot<
   EntityProps,

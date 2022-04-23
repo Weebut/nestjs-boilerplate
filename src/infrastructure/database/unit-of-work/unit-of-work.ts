@@ -1,4 +1,4 @@
-import { TypeormUnitOfWork } from '@Libs/structure/infrastructure/database/unit-of-work/typeorm.unit-of-work';
+import { TypeormUnitOfWork } from '@libs/structure/infrastructure/database/unit-of-work/typeorm.unit-of-work';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

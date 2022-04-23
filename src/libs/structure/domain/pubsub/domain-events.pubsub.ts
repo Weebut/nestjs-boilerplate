@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { BaseAggregateRoot } from '@Libs/structure/domain/base-classes/base-aggregate-root';
-import { BaseDomainEvent } from '@Libs/structure/domain/base-classes/base-domain-event';
-import { BaseDomainEventHandler } from '@Libs/structure/domain/base-classes/base-domain-event-handler';
-import { Logger } from '@Libs/structure/domain/ports/logger.port';
-import { ID } from '@Libs/structure/domain/value-objects/id.value-object';
-import { Final } from '@Libs/decorators/final.decorator';
+import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
+import { BaseDomainEvent } from '@libs/structure/domain/base-classes/base-domain-event';
+import { BaseDomainEventHandler } from '@libs/structure/domain/base-classes/base-domain-event-handler';
+import { Logger } from '@libs/structure/domain/ports/logger.port';
+import { ID } from '@libs/structure/domain/value-objects/id.value-object';
+import { Final } from '@libs/decorators/final.decorator';
 
 type EventName = string;
 

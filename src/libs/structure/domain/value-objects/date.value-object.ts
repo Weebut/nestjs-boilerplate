@@ -1,7 +1,7 @@
 import {
   DomainPrimitive,
   BaseValueObject,
-} from '@Libs/structure/domain/base-classes/base-value-object';
+} from '@libs/structure/domain/base-classes/base-value-object';
 
 export class DateVO extends BaseValueObject<Date> {
   constructor(value: Date | string | number) {

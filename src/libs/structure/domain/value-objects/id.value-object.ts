@@ -1,7 +1,7 @@
 import {
   DomainPrimitive,
   BaseValueObject,
-} from '@Libs/structure/domain/base-classes/base-value-object';
+} from '@libs/structure/domain/base-classes/base-value-object';
 
 export abstract class ID extends BaseValueObject<string> {
   constructor(value: string) {

@@ -1,5 +1,5 @@
-import { DomainPrimitive } from '@Libs/structure/domain/base-classes/base-value-object';
-import { ID } from '@Libs/structure/domain/value-objects/id.value-object';
+import { DomainPrimitive } from '@libs/structure/domain/base-classes/base-value-object';
+import { ID } from '@libs/structure/domain/value-objects/id.value-object';
 import { v4 as uuidV4, validate } from 'uuid';
 
 export class UUID extends ID {

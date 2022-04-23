@@ -1,4 +1,4 @@
-import { BaseTypeormEntity } from '@Libs/structure/infrastructure/database/base-classes/base-typeorm-entity';
+import { BaseTypeormEntity } from '@libs/structure/infrastructure/database/base-classes/base-typeorm-entity';
 import { Entity } from 'typeorm';
 
 @Entity('user')

@@ -1,5 +1,5 @@
-import { BaseEntity } from '@Libs/structure/domain/base-classes/base-entity';
-import { UUID } from '@Libs/structure/domain/value-objects/uuid.value-object';
+import { BaseEntity } from '@libs/structure/domain/base-classes/base-entity';
+import { UUID } from '@libs/structure/domain/value-objects/uuid.value-object';
 import { Foo } from '@components/users/domain/value-objects/foo.value-object';
 import { UserBoos } from './user.type';
 

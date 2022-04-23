@@ -1,5 +1,5 @@
-import { ID } from '@Libs/structure/domain/value-objects/id.value-object';
-import { IdResponse } from '@Libs/structure/interface-adapters/dtos/id-response.dto';
+import { ID } from '@libs/structure/domain/value-objects/id.value-object';
+import { IdResponse } from '@libs/structure/interface-adapters/dtos/id-response.dto';
 import { CreateUserCommand } from '@components/users/commands/create-user/create-user.command';
 import { CreateUserRequest } from '@components/users/commands/create-user/create-user.request.dto';
 import { usersRoute } from '@components/users/constants/route';

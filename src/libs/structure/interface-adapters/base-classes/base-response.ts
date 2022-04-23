@@ -1,5 +1,5 @@
-import { BaseEntityProps } from '@Libs/structure/domain/base-classes/base-entity';
-import { IdResponse } from '@Libs/structure/interface-adapters/dtos/id-response.dto';
+import { BaseEntityProps } from '@libs/structure/domain/base-classes/base-entity';
+import { IdResponse } from '@libs/structure/interface-adapters/dtos/id-response.dto';
 
 export class BaseResponse extends IdResponse {
   constructor(entity: BaseEntityProps) {
