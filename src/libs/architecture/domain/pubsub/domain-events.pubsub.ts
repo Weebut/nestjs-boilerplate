@@ -1,13 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { AggregateRoot } from '@nestjs/cqrs';
 import { Final } from '../../../decorators/final.decorator';
 import { BaseAggregateRoot } from '../base-classes/base-aggregate-root';
 import { BaseDomainEvent } from '../base-classes/base-domain-event';
 import { BaseDomainEventHandler } from '../base-classes/base-domain-event-handler';
 import { Logger } from '../ports/logger.port';
 import { ID } from '../value-objects/id.value-object';
-
-AggregateRoot;
 
 type EventName = string;
 
