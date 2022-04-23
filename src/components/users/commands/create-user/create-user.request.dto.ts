@@ -1,5 +1,5 @@
+import { CreateUser } from '@InterfaceAdapters/interfaces/user/create-user.interface';
 import { IsString, MaxLength, MinLength } from 'class-validator';
-import { CreateUser } from 'src/interface-adapters/interfaces/user/create-user.interface';
 
 export class CreateUserRequest implements CreateUser {
   @IsString()

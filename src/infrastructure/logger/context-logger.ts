@@ -1,5 +1,5 @@
+import { Logger as LoggerInterface } from '@Arch/domain/ports/logger.port';
 import { Logger } from '@nestjs/common';
-import { Logger as LoggerInterface } from 'src/libs/architecture/domain/ports/logger.port';
 
 export class ContextLogger implements LoggerInterface {
   constructor(context?: string) {

@@ -1,8 +1,8 @@
 import {
-  DomainPrimitive,
   BaseValueObject,
-} from 'src/libs/architecture/domain/base-classes/base-value-object';
-import { Guard } from 'src/libs/architecture/domain/guard';
+  DomainPrimitive,
+} from '@Arch/domain/base-classes/base-value-object';
+import { Guard } from '@Arch/domain/guard';
 
 export class Foo extends BaseValueObject<string> {
   static minFooLength = 5;

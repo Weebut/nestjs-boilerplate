@@ -1,8 +1,8 @@
+import { BaseCommandHandler } from '@Arch/domain/base-classes/base-command-handler';
+import { CreateUserCommand } from '@Components/users/commands/create-user/create-user.command';
+import { User } from '@Components/users/domain/entities/user.entity';
+import { Foo } from '@Components/users/domain/value-objects/foo.value-object';
 import { CommandHandler } from '@nestjs/cqrs';
-import { BaseCommandHandler } from 'src/libs/architecture/domain/base-classes/base-command-handler';
-import { User } from '../../domain/entities/user.entity';
-import { Foo } from '../../domain/value-objects/foo.value-object';
-import { CreateUserCommand } from './create-user.command';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler extends BaseCommandHandler {

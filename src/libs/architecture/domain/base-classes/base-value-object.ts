@@ -1,5 +1,5 @@
-import { convertPropsToObject } from 'src/libs/utils/convert-props-to-object.util';
-import { Guard } from '../guard';
+import { Guard } from '@Arch/domain/guard';
+import { convertPropsToObject } from '@Libs/utils/convert-props-to-object.util';
 
 export type Primitives = string | number | boolean;
 export interface DomainPrimitive<T extends Primitives | Date> {

@@ -1,6 +1,6 @@
+import { DomainPrimitive } from '@Arch/domain/base-classes/base-value-object';
+import { ID } from '@Arch/domain/value-objects/id.value-object';
 import { v4 as uuidV4, validate } from 'uuid';
-import { DomainPrimitive } from '../base-classes/base-value-object';
-import { ID } from './id.value-object';
 
 export class UUID extends ID {
   /**

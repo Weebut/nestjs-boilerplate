@@ -1,5 +1,5 @@
 import { Controller, Get, VERSION_NEUTRAL } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService } from 'src/app.service';
 
 @Controller({ version: VERSION_NEUTRAL })
 export class AppController {

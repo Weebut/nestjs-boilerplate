@@ -1,9 +1,9 @@
+import { CreateUserCommandHandler } from '@Components/users/commands/create-user/create-user.command-handler';
+import { UserOrmEntity } from '@Components/users/database/user.orm-entity';
+import { UsersController } from '@Components/users/users.controller';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CreateUserCommandHandler } from './commands/create-user/create-user.command-handler';
-import { UserOrmEntity } from './database/user.orm-entity';
-import { UsersController } from './users.controller';
 
 const commandHandlers = [CreateUserCommandHandler];
 

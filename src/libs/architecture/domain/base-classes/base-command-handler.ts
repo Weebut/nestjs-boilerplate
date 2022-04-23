@@ -1,4 +1,4 @@
-import { BaseCommand } from './base-command';
+import { BaseCommand } from '@Arch/domain/base-classes/base-command';
 
 export abstract class BaseCommandHandler {
   abstract handle(command: BaseCommand): Promise<any>;
