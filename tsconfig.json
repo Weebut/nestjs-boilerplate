@@ -21,7 +21,6 @@
       "@Components/*": ["src/components/*"],
       "@Infrastructure/*": ["src/infrastructure/*"],
       "@InterfaceAdapters/*": ["src/interface-adapters/*"],
-      "@Configs/*": ["src/infrastructure/configs/*"],
       "@Libs/*": ["src/libs/*"]
     }
   }

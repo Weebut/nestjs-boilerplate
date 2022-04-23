@@ -1,4 +1,4 @@
-import { EnvironmentConfigService } from '@Configs/environment/environment.service';
+import { EnvironmentConfigService } from '@Infrastructure/configs/environment/environment.service';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 

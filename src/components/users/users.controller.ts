@@ -3,7 +3,7 @@ import { IdResponse } from '@Libs/structure/interface-adapters/dtos/id-response.
 import { CreateUserCommand } from '@Components/users/commands/create-user/create-user.command';
 import { CreateUserRequest } from '@Components/users/commands/create-user/create-user.request.dto';
 import { usersRoute } from '@Components/users/constants/route';
-import { v1 } from '@Configs/versions/v1';
+import { v1 } from '@Infrastructure/configs/versions/v1';
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 

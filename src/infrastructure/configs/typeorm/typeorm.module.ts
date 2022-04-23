@@ -1,5 +1,5 @@
-import { EnvironmentConfigModule } from '@Configs/environment/environment.module';
-import { EnvironmentConfigService } from '@Configs/environment/environment.service';
+import { EnvironmentConfigModule } from '@Infrastructure/configs/environment/environment.module';
+import { EnvironmentConfigService } from '@Infrastructure/configs/environment/environment.service';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
