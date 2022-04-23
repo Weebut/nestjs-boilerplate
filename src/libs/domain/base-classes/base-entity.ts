@@ -1,17 +1,18 @@
 import { convertPropsToObject } from 'src/libs/utils/convert-props-to-object.util';
-import { v4 as uuidv4 } from 'uuid';
+import { DateVO } from '../value-objects/date.value-object';
+import { ID } from '../value-objects/id.value-object';
 
 export interface BaseEntityProps {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: ID;
+  createdAt: DateVO;
+  updatedAt: DateVO;
 }
 
 export interface CreateEntityProps<T> {
-  id?: string;
+  id: ID;
   props: T;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: DateVO;
+  updatedAt?: DateVO;
 }
 
 export abstract class Entity<EntityProps> {
@@ -23,9 +24,9 @@ export abstract class Entity<EntityProps> {
   }: CreateEntityProps<EntityProps>) {
     this.validateProps(props);
 
-    const now = new Date();
+    const now = DateVO.now();
 
-    this._id = id ?? uuidv4();
+    this.setId(id);
     this.props = props;
     this._createdAt = createdAt || now;
     this._updatedAt = updatedAt || now;
@@ -33,13 +34,17 @@ export abstract class Entity<EntityProps> {
     this.validate();
   }
 
-  private readonly _id: string;
+  protected abstract _id: ID; // Implement freely
   protected readonly props: EntityProps;
-  private readonly _createdAt: Date;
-  private _updatedAt: Date;
+  private readonly _createdAt: DateVO;
+  private _updatedAt: DateVO;
 
   get id() {
     return this._id;
+  }
+
+  private setId(id: ID): void {
+    this._id = id;
   }
 
   get createdAt() {
