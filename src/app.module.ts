@@ -3,10 +3,10 @@ import { TypeormConfigModule } from '@Configs/typeorm/typeorm.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './modules/user/user.module';
+import { ComponentsModule } from './components/components.module';
 
 @Module({
-  imports: [EnvironmentConfigModule, TypeormConfigModule, UserModule],
+  imports: [EnvironmentConfigModule, TypeormConfigModule, ComponentsModule],
   controllers: [AppController],
   providers: [AppService],
 })
