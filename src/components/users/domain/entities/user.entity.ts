@@ -1,6 +1,6 @@
 import { BaseEntity } from '@Libs/structure/domain/base-classes/base-entity';
 import { UUID } from '@Libs/structure/domain/value-objects/uuid.value-object';
-import { Foo } from '@Components/users/domain/value-objects/foo.value-object';
+import { Foo } from '@components/users/domain/value-objects/foo.value-object';
 import { UserBoos } from './user.type';
 
 export interface CreateUserProps {

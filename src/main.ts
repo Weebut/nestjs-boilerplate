@@ -1,4 +1,4 @@
-import { v1 } from '@Infrastructure/configs/versions/v1';
+import { v1 } from '@infrastructure/configs/versions/v1';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { config } from 'dotenv';

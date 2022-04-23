@@ -1,6 +1,6 @@
-import { CreateUserCommandHandler } from '@Components/users/commands/create-user/create-user.command-handler';
-import { UserOrmEntity } from '@Components/users/database/user.orm-entity';
-import { UsersController } from '@Components/users/users.controller';
+import { CreateUserCommandHandler } from '@components/users/commands/create-user/create-user.command-handler';
+import { UserOrmEntity } from '@components/users/database/user.orm-entity';
+import { UsersController } from '@components/users/users.controller';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';

@@ -1,9 +1,9 @@
 import { ID } from '@Libs/structure/domain/value-objects/id.value-object';
 import { IdResponse } from '@Libs/structure/interface-adapters/dtos/id-response.dto';
-import { CreateUserCommand } from '@Components/users/commands/create-user/create-user.command';
-import { CreateUserRequest } from '@Components/users/commands/create-user/create-user.request.dto';
-import { usersRoute } from '@Components/users/constants/route';
-import { v1 } from '@Infrastructure/configs/versions/v1';
+import { CreateUserCommand } from '@components/users/commands/create-user/create-user.command';
+import { CreateUserRequest } from '@components/users/commands/create-user/create-user.request.dto';
+import { usersRoute } from '@components/users/constants/route';
+import { v1 } from '@infrastructure/configs/versions/v1';
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
