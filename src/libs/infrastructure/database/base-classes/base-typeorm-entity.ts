@@ -1,6 +1,6 @@
 import { CreateDateColumn, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
-export abstract class TypeormBaseEntity {
+export abstract class BaseTypeormEntity {
   constructor(props?: unknown) {
     if (props) {
       Object.assign(this, props);
