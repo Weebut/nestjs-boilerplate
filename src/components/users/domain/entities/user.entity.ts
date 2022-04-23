@@ -1,4 +1,4 @@
-import { Entity } from 'src/libs/architecture/domain/base-classes/base-entity';
+import { BaseEntity } from 'src/libs/architecture/domain/base-classes/base-entity';
 import { UUID } from 'src/libs/architecture/domain/value-objects/uuid.value-object';
 import { Foo } from '../value-objects/foo.value-object';
 import { UserBoos } from './user.type';
@@ -11,7 +11,7 @@ export interface UserProps extends CreateUserProps {
   boo: UserBoos;
 }
 
-export class User extends Entity<UserProps> {
+export class User extends BaseEntity<UserProps> {
   static create(props: CreateUserProps) {
     const id = UUID.generate();
 

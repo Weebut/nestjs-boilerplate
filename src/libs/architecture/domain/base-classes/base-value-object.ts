@@ -6,24 +6,26 @@ export interface DomainPrimitive<T extends Primitives | Date> {
   value: T;
 }
 
-type ValueObjectProps<T> = T extends Primitives | Date ? DomainPrimitive<T> : T;
+type BaseValueObjectProps<T> = T extends Primitives | Date
+  ? DomainPrimitive<T>
+  : T;
 
-export abstract class ValueObject<T> {
-  protected readonly props: ValueObjectProps<T>;
+export abstract class BaseValueObject<T> {
+  protected readonly props: BaseValueObjectProps<T>;
 
-  constructor(props: ValueObjectProps<T>) {
+  constructor(props: BaseValueObjectProps<T>) {
     this.checkIfEmpty(props);
     this.validate(props);
     this.props = props;
   }
 
-  protected abstract validate(props: ValueObjectProps<T>): void;
+  protected abstract validate(props: BaseValueObjectProps<T>): void;
 
-  static isValueObject(obj: unknown): obj is ValueObject<unknown> {
-    return obj instanceof ValueObject;
+  static isValueObject(obj: unknown): obj is BaseValueObject<unknown> {
+    return obj instanceof BaseValueObject;
   }
 
-  public equals(object?: ValueObject<T>): boolean {
+  public equals(object?: BaseValueObject<T>): boolean {
     if (object === null || object === undefined) {
       return false;
     }
@@ -40,7 +42,7 @@ export abstract class ValueObject<T> {
     return Object.freeze(propsCopy);
   }
 
-  private checkIfEmpty(props: ValueObjectProps<T>): void {
+  private checkIfEmpty(props: BaseValueObjectProps<T>): void {
     if (
       Guard.isEmpty(props) ||
       (this.isDomainPrimitive(props) && Guard.isEmpty(props.value))

@@ -15,7 +15,7 @@ export interface CreateEntityProps<T> {
   updatedAt?: DateVO;
 }
 
-export abstract class Entity<EntityProps> {
+export abstract class BaseEntity<EntityProps> {
   constructor({
     id,
     props,
@@ -55,11 +55,11 @@ export abstract class Entity<EntityProps> {
     return this._updatedAt;
   }
 
-  static isEntity(entity: unknown): entity is Entity<unknown> {
-    return entity instanceof Entity;
+  static isEntity(entity: unknown): entity is BaseEntity<unknown> {
+    return entity instanceof BaseEntity;
   }
 
-  public equals(object?: Entity<EntityProps>): boolean {
+  public equals(object?: BaseEntity<EntityProps>): boolean {
     if (object === null || object === undefined) {
       return false;
     }
@@ -68,7 +68,7 @@ export abstract class Entity<EntityProps> {
       return true;
     }
 
-    if (!Entity.isEntity(object)) {
+    if (!BaseEntity.isEntity(object)) {
       return false;
     }
 

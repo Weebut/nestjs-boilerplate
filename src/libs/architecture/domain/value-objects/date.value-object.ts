@@ -1,9 +1,9 @@
 import {
   DomainPrimitive,
-  ValueObject,
+  BaseValueObject,
 } from '../base-classes/base-value-object';
 
-export class DateVO extends ValueObject<Date> {
+export class DateVO extends BaseValueObject<Date> {
   constructor(value: Date | string | number) {
     const date = new Date(value);
     super({ value: date });

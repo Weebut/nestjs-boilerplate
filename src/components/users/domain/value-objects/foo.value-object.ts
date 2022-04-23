@@ -1,10 +1,10 @@
 import {
   DomainPrimitive,
-  ValueObject,
+  BaseValueObject,
 } from 'src/libs/architecture/domain/base-classes/base-value-object';
 import { Guard } from 'src/libs/architecture/domain/guard';
 
-export class Foo extends ValueObject<string> {
+export class Foo extends BaseValueObject<string> {
   static minFooLength = 5;
   static maxFooLength = 200;
 

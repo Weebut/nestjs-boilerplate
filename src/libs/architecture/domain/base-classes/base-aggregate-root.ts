@@ -1,10 +1,10 @@
 import { DomainEventsPubSub } from '../pubsub/domain-events.pubsub';
 import { BaseDomainEvent } from './base-domain-event';
-import { Entity } from './base-entity';
+import { BaseEntity } from './base-entity';
 
 export abstract class BaseAggregateRoot<
   EntityProps,
-> extends Entity<EntityProps> {
+> extends BaseEntity<EntityProps> {
   private _domainEvents: BaseDomainEvent[] = [];
 
   get domainEvents() {

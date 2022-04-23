@@ -1,9 +1,9 @@
 import {
   DomainPrimitive,
-  ValueObject,
+  BaseValueObject,
 } from '../base-classes/base-value-object';
 
-export abstract class ID extends ValueObject<string> {
+export abstract class ID extends BaseValueObject<string> {
   constructor(value: string) {
     super({ value });
   }

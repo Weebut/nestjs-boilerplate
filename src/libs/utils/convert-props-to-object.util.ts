@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types */
 
-import { Entity } from '../architecture/domain/base-classes/base-entity';
-import { ValueObject } from '../architecture/domain/base-classes/base-value-object';
+import { BaseEntity } from '../architecture/domain/base-classes/base-entity';
+import { BaseValueObject } from '../architecture/domain/base-classes/base-value-object';
 
-function isEntity(obj: unknown): obj is Entity<unknown> {
+function isEntity(obj: unknown): obj is BaseEntity<unknown> {
   /**
    * 'instanceof Entity' causes error here for some reason.
    * Probably creates some circular dependency. This is a workaround
@@ -12,12 +12,12 @@ function isEntity(obj: unknown): obj is Entity<unknown> {
   return (
     Object.prototype.hasOwnProperty.call(obj, 'toObject') &&
     Object.prototype.hasOwnProperty.call(obj, 'id') &&
-    ValueObject.isValueObject((obj as Entity<unknown>).id)
+    BaseValueObject.isValueObject((obj as BaseEntity<unknown>).id)
   );
 }
 
 function convertToPlainObject(item: any): any {
-  if (ValueObject.isValueObject(item)) {
+  if (BaseValueObject.isValueObject(item)) {
     return item.unpack();
   }
   if (isEntity(item)) {
