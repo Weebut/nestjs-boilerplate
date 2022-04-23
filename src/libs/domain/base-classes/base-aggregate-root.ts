@@ -1,4 +1,3 @@
-import { DomainEvents } from '../domain-events/domain-events';
 import { BaseDomainEvent } from './base-domain-event';
 import { Entity } from './base-entity';
 
@@ -13,7 +12,7 @@ export abstract class BaseAggregateRoot<
 
   protected addEvent(domainEvent: BaseDomainEvent): void {
     this._domainEvents.push(domainEvent);
-    DomainEvents.prepareForPublish(this);
+    // TODO : Prepare for publishing
   }
 
   public clearEvents(): void {
