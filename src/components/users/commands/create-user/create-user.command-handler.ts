@@ -1,4 +1,4 @@
-import { BaseCommandHandler } from '@Arch/domain/base-classes/base-command-handler';
+import { BaseCommandHandler } from '@Libs/structure/domain/base-classes/base-command-handler';
 import { CreateUserCommand } from '@Components/users/commands/create-user/create-user.command';
 import { User } from '@Components/users/domain/entities/user.entity';
 import { Foo } from '@Components/users/domain/value-objects/foo.value-object';

@@ -1,5 +1,5 @@
-import { DateVO } from '@Arch/domain/value-objects/date.value-object';
-import { ID } from '@Arch/domain/value-objects/id.value-object';
+import { DateVO } from '@Libs/structure/domain/value-objects/date.value-object';
+import { ID } from '@Libs/structure/domain/value-objects/id.value-object';
 import { convertPropsToObject } from '@Libs/utils/convert-props-to-object.util';
 
 export interface BaseEntityProps {

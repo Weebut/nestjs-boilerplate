@@ -1,5 +1,5 @@
-import { ID } from '@Arch/domain/value-objects/id.value-object';
-import { IdResponse } from '@Arch/interface-adapters/dtos/id-response.dto';
+import { ID } from '@Libs/structure/domain/value-objects/id.value-object';
+import { IdResponse } from '@Libs/structure/interface-adapters/dtos/id-response.dto';
 import { CreateUserCommand } from '@Components/users/commands/create-user/create-user.command';
 import { CreateUserRequest } from '@Components/users/commands/create-user/create-user.request.dto';
 import { usersRoute } from '@Components/users/constants/route';

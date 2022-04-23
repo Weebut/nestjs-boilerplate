@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
-import { BaseAggregateRoot } from '@Arch/domain/base-classes/base-aggregate-root';
-import { BaseDomainEvent } from '@Arch/domain/base-classes/base-domain-event';
-import { BaseDomainEventHandler } from '@Arch/domain/base-classes/base-domain-event-handler';
-import { Logger } from '@Arch/domain/ports/logger.port';
-import { ID } from '@Arch/domain/value-objects/id.value-object';
+import { BaseAggregateRoot } from '@Libs/structure/domain/base-classes/base-aggregate-root';
+import { BaseDomainEvent } from '@Libs/structure/domain/base-classes/base-domain-event';
+import { BaseDomainEventHandler } from '@Libs/structure/domain/base-classes/base-domain-event-handler';
+import { Logger } from '@Libs/structure/domain/ports/logger.port';
+import { ID } from '@Libs/structure/domain/value-objects/id.value-object';
 import { Final } from '@Libs/decorators/final.decorator';
 
 type EventName = string;

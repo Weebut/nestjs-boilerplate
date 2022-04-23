@@ -1,5 +1,5 @@
-import { Guard } from '@Arch/domain/guard';
-import { UUID } from '@Arch/domain/value-objects/uuid.value-object';
+import { Guard } from '@Libs/structure/domain/guard';
+import { UUID } from '@Libs/structure/domain/value-objects/uuid.value-object';
 
 export type DomainEventProps<T> = Omit<
   T,

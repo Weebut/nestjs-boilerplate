@@ -22,8 +22,7 @@
       "@Infrastructure/*": ["src/infrastructure/*"],
       "@InterfaceAdapters/*": ["src/interface-adapters/*"],
       "@Configs/*": ["src/infrastructure/configs/*"],
-      "@Libs/*": ["src/libs/*"],
-      "@Arch/*": ["src/libs/architecture/*"]
+      "@Libs/*": ["src/libs/*"]
     }
   }
 }

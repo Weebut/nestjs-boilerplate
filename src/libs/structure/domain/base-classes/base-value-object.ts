@@ -1,4 +1,4 @@
-import { Guard } from '@Arch/domain/guard';
+import { Guard } from '@Libs/structure/domain/guard';
 import { convertPropsToObject } from '@Libs/utils/convert-props-to-object.util';
 
 export type Primitives = string | number | boolean;
