@@ -1,4 +1,4 @@
-import { BaseEntityProps } from 'src/libs/domain/base-classes/base-entity';
+import { BaseEntityProps } from 'src/libs/architecture/domain/base-classes/base-entity';
 import { IdResponse } from '../dtos/id-response.dto';
 
 export class BaseResponse extends IdResponse {

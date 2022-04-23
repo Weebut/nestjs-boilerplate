@@ -1,5 +1,5 @@
 import { CommandHandler } from '@nestjs/cqrs';
-import { BaseCommandHandler } from 'src/libs/domain/base-classes/base-command-handler';
+import { BaseCommandHandler } from 'src/libs/architecture/domain/base-classes/base-command-handler';
 import { User } from '../../domain/entities/user.entity';
 import { Foo } from '../../domain/value-objects/foo.value-object';
 import { CreateUserCommand } from './create-user.command';
