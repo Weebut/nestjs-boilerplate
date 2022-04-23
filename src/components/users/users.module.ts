@@ -12,4 +12,4 @@ const commandHandlers = [CreateUserCommandHandler];
   controllers: [CreateUserController],
   providers: [...commandHandlers],
 })
-export class UserModule {}
+export class UsersModule {}
