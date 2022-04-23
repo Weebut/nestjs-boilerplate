@@ -11,6 +11,8 @@ export class CreateUserCommandHandler extends BaseCommandHandler {
       foo: new Foo(command.foo),
     });
 
-    return user;
+    // TODO : Persist user entity
+
+    return user.id;
   }
 }
