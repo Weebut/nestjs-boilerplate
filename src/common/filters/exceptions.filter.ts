@@ -90,7 +90,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
     return {
       status: 500,
-      message: null,
+      message: {
+        message: null,
+        error: null,
+      },
     };
   }
 }
