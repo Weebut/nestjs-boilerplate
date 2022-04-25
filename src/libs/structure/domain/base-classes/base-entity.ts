@@ -1,6 +1,12 @@
+import {
+  ArgumentInvalidException,
+  ArgumentNotProvidedException,
+  ArgumentOutOfRangeException,
+} from '@libs/exceptions';
 import { DateVO } from '@libs/structure/domain/value-objects/date.value-object';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
 import { convertPropsToObject } from '@libs/utils/convert-props-to-object.util';
+import { Guard } from '../guard';
 
 export interface BaseEntityProps {
   id: ID;
@@ -100,7 +106,20 @@ export abstract class BaseEntity<EntityProps> {
 
   public abstract validate(): void;
   public validateProps(props: EntityProps): void {
-    // TODO : Validate props
-    return;
+    const maxProps = 100;
+
+    if (Guard.isEmpty(props)) {
+      throw new ArgumentNotProvidedException(
+        'Entity props should not be empty',
+      );
+    }
+    if (typeof props !== 'object') {
+      throw new ArgumentInvalidException('Entity props should be an object');
+    }
+    if (Object.keys(props).length > maxProps) {
+      throw new ArgumentOutOfRangeException(
+        `Entity props should not have more than ${maxProps} properties`,
+      );
+    }
   }
 }

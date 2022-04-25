@@ -1,3 +1,4 @@
+import { ArgumentNotProvidedException } from '@libs/exceptions';
 import { Guard } from '@libs/structure/domain/guard';
 import { UUID } from '@libs/structure/domain/value-objects/uuid.value-object';
 
@@ -20,7 +21,9 @@ export abstract class BaseDomainEvent {
 
   constructor(props: DomainEventProps<unknown>) {
     if (Guard.isEmpty(props)) {
-      throw new Error('DomainEvent props should not be empty');
+      throw new ArgumentNotProvidedException(
+        'DomainEvent props should not be empty',
+      );
     }
     this.id = UUID.generate().unpack();
     this.aggregateId = props.aggregateId;

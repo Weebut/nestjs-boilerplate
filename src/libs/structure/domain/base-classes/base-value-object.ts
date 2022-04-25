@@ -1,3 +1,4 @@
+import { ArgumentNotProvidedException } from '@libs/exceptions';
 import { Guard } from '@libs/structure/domain/guard';
 import { convertPropsToObject } from '@libs/utils/convert-props-to-object.util';
 
@@ -47,7 +48,7 @@ export abstract class BaseValueObject<T> {
       Guard.isEmpty(props) ||
       (this.isDomainPrimitive(props) && Guard.isEmpty(props.value))
     ) {
-      throw new Error('Property cannot be empty');
+      throw new ArgumentNotProvidedException('Property cannot be empty');
     }
   }
 

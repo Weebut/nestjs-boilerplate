@@ -1,3 +1,4 @@
+import { NotFoundException } from '@libs/exceptions';
 import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
 import { Logger } from '@libs/structure/domain/ports/logger.port';
 import {
@@ -8,7 +9,6 @@ import {
 } from '@libs/structure/domain/ports/repository.port';
 import { DomainEventsPubSub } from '@libs/structure/domain/pubsub/domain-events.pubsub';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
-import { NotFoundException } from '@nestjs/common';
 import { FindConditions, ObjectLiteral, Repository } from 'typeorm';
 import { BaseOrmMapper } from './base-orm-mapper';
 
@@ -92,7 +92,7 @@ export abstract class BaseTypeormRepository<
   async findOneOrThrow(params: QueryParams<EntityProps> = {}): Promise<Entity> {
     const found = await this.findOne(params);
     if (!found) {
-      throw new Error('Not found');
+      throw new NotFoundException('Not found');
     }
     return found;
   }
@@ -102,7 +102,7 @@ export abstract class BaseTypeormRepository<
       where: { id: id instanceof ID ? id.value : id },
     });
     if (!found) {
-      throw new NotFoundException();
+      throw new NotFoundException('Not found');
     }
     return this.mapper.toDomainEntity(found);
   }

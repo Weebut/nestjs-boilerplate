@@ -1,4 +1,5 @@
 import { ContextLogger } from '@infrastructure/logger/context-logger';
+import { NotFoundException } from '@libs/exceptions';
 import { QueryParams } from '@libs/structure/domain/ports/repository.port';
 import {
   BaseTypeormRepository,
@@ -41,7 +42,7 @@ export class UsersRepository
   async findOneByIdOrThrow(id: string): Promise<User> {
     const user = await this.findOneById(id);
     if (!user) {
-      throw new Error(`User with id '${id}' not found`);
+      throw new NotFoundException(`User with id '${id}' not found`);
     }
     return this.mapper.toDomainEntity(user);
   }
@@ -59,7 +60,7 @@ export class UsersRepository
   async findOneByEmailOrThrow(email: string): Promise<User> {
     const user = await this.findOneByEmail(email);
     if (!user) {
-      throw new Error(`User with email '${email}' not found`);
+      throw new NotFoundException(`User with email '${email}' not found`);
     }
     return this.mapper.toDomainEntity(user);
   }

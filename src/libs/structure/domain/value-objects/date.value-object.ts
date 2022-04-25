@@ -1,6 +1,7 @@
+import { ArgumentInvalidException } from '@libs/exceptions';
 import {
-  DomainPrimitive,
   BaseValueObject,
+  DomainPrimitive,
 } from '@libs/structure/domain/base-classes/base-value-object';
 
 export class DateVO extends BaseValueObject<Date> {
@@ -19,7 +20,7 @@ export class DateVO extends BaseValueObject<Date> {
 
   protected validate({ value }: DomainPrimitive<Date>): void {
     if (!(value instanceof Date) || Number.isNaN(value.getTime())) {
-      throw new Error('Incorrect date');
+      throw new ArgumentInvalidException('Incorrect date');
     }
   }
 }

@@ -1,3 +1,4 @@
+import { ArgumentNotProvidedException } from '@libs/exceptions';
 import { nanoid } from 'nanoid';
 import { Guard } from '../guard';
 import { UUID } from '../value-objects/uuid.value-object';
@@ -11,7 +12,9 @@ export class BaseCommand {
 
   constructor(props: any) {
     if (Guard.isEmpty(props)) {
-      throw new Error('Command props should not be empty');
+      throw new ArgumentNotProvidedException(
+        'Command props should not be empty',
+      );
     }
 
     this.correlationId = props.correlationId || nanoid(8);

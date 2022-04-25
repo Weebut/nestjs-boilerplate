@@ -1,4 +1,8 @@
 import {
+  ArgumentInvalidException,
+  ArgumentOutOfRangeException,
+} from '@libs/exceptions';
+import {
   BaseValueObject,
   DomainPrimitive,
 } from '@libs/structure/domain/base-classes/base-value-object';
@@ -21,10 +25,10 @@ export class Email extends BaseValueObject<string> {
     if (
       !Guard.lengthIsBetween(value, Email.minEmailLength, Email.maxEmailLength)
     ) {
-      throw new Error('Email');
+      throw new ArgumentOutOfRangeException('Email');
     }
     if (!value.includes('@')) {
-      throw new Error('Email has incorrect format');
+      throw new ArgumentInvalidException('Email has incorrect format');
     }
 
     // TODO : Validate more!

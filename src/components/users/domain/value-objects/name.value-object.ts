@@ -1,3 +1,4 @@
+import { ArgumentOutOfRangeException } from '@libs/exceptions';
 import { BaseValueObject } from '@libs/structure/domain/base-classes/base-value-object';
 import { Guard } from '@libs/structure/domain/guard';
 
@@ -41,7 +42,7 @@ export class Name extends BaseValueObject<NameProps> {
         Name.maxNameLength,
       )
     ) {
-      throw new Error('family name is out of range');
+      throw new ArgumentOutOfRangeException('family name is out of range');
     }
     if (
       !Guard.lengthIsBetween(
@@ -50,7 +51,7 @@ export class Name extends BaseValueObject<NameProps> {
         Name.maxNameLength,
       )
     ) {
-      throw new Error('given name is out of range');
+      throw new ArgumentOutOfRangeException('given name is out of range');
     }
     if (
       !Guard.lengthIsBetween(
@@ -59,7 +60,7 @@ export class Name extends BaseValueObject<NameProps> {
         Name.maxNicknameLength,
       )
     ) {
-      throw new Error('nickname is out of range');
+      throw new ArgumentOutOfRangeException('nickname is out of range');
     }
   }
 
