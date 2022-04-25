@@ -31,11 +31,12 @@ export class UsersRepository
     );
   }
 
-  protected relations: string[] = [];
+  protected relations: string[] = ['portfolios'];
 
   private async findOneById(id: string): Promise<UserOrmEntity | undefined> {
     const user = await this.usersRepository.findOne({
       where: { id },
+      relations: this.relations,
     });
 
     return user;
@@ -77,7 +78,10 @@ export class UsersRepository
 
   async findUsers(query: FindUsersQuery): Promise<User[]> {
     const where: QueryParams<UserOrmEntity> = removeUndefinedProps(query);
-    const users = await this.repository.find({ where });
+    const users = await this.repository.find({
+      where,
+      relations: this.relations,
+    });
     return users.map((user) => this.mapper.toDomainEntity(user));
   }
 

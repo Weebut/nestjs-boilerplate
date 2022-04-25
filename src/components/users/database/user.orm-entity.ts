@@ -1,6 +1,7 @@
 import { BaseTypeormEntity } from '@libs/structure/infrastructure/database/base-classes/base-typeorm-entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { UserRoles } from '../domain/entities/user.type';
+import { PortfolioOrmEntity } from './portfolio.orm-entity';
 
 @Entity('user')
 export class UserOrmEntity extends BaseTypeormEntity {
@@ -22,4 +23,9 @@ export class UserOrmEntity extends BaseTypeormEntity {
 
   @Column({ type: 'enum', enum: UserRoles, default: UserRoles.GUEST })
   role: UserRoles;
+
+  @OneToMany(() => PortfolioOrmEntity, (portfolio) => portfolio.user, {
+    cascade: true,
+  })
+  portfolios: PortfolioOrmEntity[];
 }
