@@ -1,10 +1,11 @@
 import { LoggerService } from '@common/logger/logger.service';
+import { ConflictException, NotFoundException } from '@libs/exceptions';
+import { BaseException } from '@libs/exceptions/base-classes/base-exception';
 import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
   HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 
 interface ErrorInterface {
@@ -21,15 +22,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest();
     const response = ctx.getResponse();
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
-
-    const message =
-      exception instanceof HttpException
-        ? (exception.getResponse() as ErrorInterface)
-        : { message: (exception as Error).message, error: null };
+    const { status, message } = this.parseException(exception);
 
     const responseData = {
       statusCode: status,
@@ -65,5 +58,39 @@ export class AllExceptionsFilter implements ExceptionFilter {
         } message=${message.message ? message.message : null}`,
       );
     }
+  }
+
+  private parseException(exception: HttpException | BaseException): {
+    status: number;
+    message: ErrorInterface;
+  } {
+    if (exception instanceof HttpException) {
+      return {
+        status: exception.getStatus(),
+        message: exception.getResponse() as ErrorInterface,
+      };
+    } else if (exception instanceof BaseException) {
+      let status = 400;
+
+      if (exception instanceof NotFoundException) {
+        status = 404;
+      }
+
+      if (exception instanceof ConflictException) {
+        status = 409;
+      }
+
+      return {
+        status,
+        message: {
+          message: exception.message,
+          error: exception.code,
+        },
+      };
+    }
+    return {
+      status: 500,
+      message: null,
+    };
   }
 }
