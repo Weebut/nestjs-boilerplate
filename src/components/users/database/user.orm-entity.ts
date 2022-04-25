@@ -11,7 +11,7 @@ export class UserOrmEntity extends BaseTypeormEntity {
   @Column({ type: 'varchar', nullable: false, length: 320, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', nullable: false, length: 32, unique: true })
+  @Column({ type: 'varchar', nullable: false, length: 32 })
   nickname: string;
 
   @Column({ type: 'varchar', nullable: false, length: 32 })
