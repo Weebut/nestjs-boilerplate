@@ -6,8 +6,17 @@ import {
 export class CreateUserCommand extends BaseCommand {
   constructor(props: BaseCommandProps<CreateUserCommand>) {
     super(props);
-    this.foo = props.foo;
+    this.email = props.email;
+    this.familyName = props.familyName;
+    this.givenName = props.givenName;
+    this.nickname = props.nickname;
   }
 
-  readonly foo: string;
+  readonly email: string;
+
+  readonly familyName: string;
+
+  readonly givenName: string;
+
+  readonly nickname: string;
 }

@@ -1,3 +1,9 @@
 export interface CreateUser {
-  foo: string;
+  email: string;
+
+  familyName: string;
+
+  givenName: string;
+
+  nickname: string;
 }

@@ -1,9 +1,36 @@
 import { CreateUser } from '@interface-adapters/interfaces/user/create-user.interface';
-import { IsString, MaxLength, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class CreateUserRequest implements CreateUser {
+  @IsEmail()
+  @MaxLength(32)
+  email: string;
+
+  @Transform(({ value }) => value.trim())
   @IsString()
-  @MaxLength(200)
+  @IsNotEmpty()
+  @MaxLength(32)
   @MinLength(5)
-  readonly foo: string;
+  familyName: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(32)
+  @MinLength(5)
+  givenName: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(32)
+  @MinLength(5)
+  nickname: string;
 }
