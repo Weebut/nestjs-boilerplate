@@ -1,6 +1,1 @@
-const root = 'users/';
-
-export const usersRoute = {
-  root,
-  createUser: root,
-};
+export const usersRouteRoot = 'users';
