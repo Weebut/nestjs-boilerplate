@@ -8,8 +8,16 @@ interface NameProps {
 }
 
 export class Name extends BaseValueObject<NameProps> {
-  static minNameLength = 5;
+  static minNameLength = 1;
   static maxNameLength = 32;
+
+  constructor(props: NameProps) {
+    super({
+      familyName: Name.formatName(props.familyName),
+      givenName: Name.formatName(props.givenName),
+      nickname: Name.formatName(props.nickname),
+    });
+  }
 
   get familyName() {
     return this.props.familyName;
@@ -51,5 +59,10 @@ export class Name extends BaseValueObject<NameProps> {
     ) {
       throw new Error('nickname is out of range');
     }
+  }
+
+  static formatName(name: string): string {
+    // TODO : Do more!
+    return name.trim();
   }
 }
