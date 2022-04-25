@@ -19,6 +19,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@common/*": ["src/common/*"],
       "@components/*": ["src/components/*"],
       "@infrastructure/*": ["src/infrastructure/*"],
       "@interface-adapters/*": ["src/interface-adapters/*"],
