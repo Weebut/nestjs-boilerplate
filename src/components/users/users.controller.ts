@@ -9,13 +9,19 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { DeleteUserCommand } from './commands/delete-user/delete-user.command';
+import { User } from './domain/entities/user.entity';
+import { UserResponse } from './dtos/user.response.dto';
 import { UserAlreadyExistsError } from './errors/create-user.error';
+import { FindUsersQuery } from './queries/find-users/find-users.query';
+import { FindUsersRequest } from './queries/find-users/find-users.request.dto';
 
 @Controller({ version: v1, path: usersRouteRoot })
 export class UsersController {
@@ -37,6 +43,14 @@ export class UsersController {
       }
       throw err;
     }
+  }
+
+  @Get()
+  async findUsers(@Query() queries: FindUsersRequest) {
+    const query = new FindUsersQuery(queries);
+    const result = await this.queryBus.execute(query);
+
+    return result.map((user: User) => new UserResponse(user));
   }
 
   @Delete(':userId')
