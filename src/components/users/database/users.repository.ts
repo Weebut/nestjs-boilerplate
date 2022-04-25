@@ -5,10 +5,12 @@ import {
   BaseTypeormRepository,
   WhereCondition,
 } from '@libs/structure/infrastructure/database/base-classes/base-typeorm-repository';
+import { removeUndefinedProps } from '@libs/utils/remove-undefined-props.util';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User, UserProps } from '../domain/entities/user.entity';
+import { FindUsersQuery } from '../queries/find-users/find-users.query';
 import { UserOrmEntity } from './user.orm-entity';
 import { UserOrmMapper } from './user.orm.mapper';
 import { UsersRepositoryPort } from './users.repository.port';
@@ -73,11 +75,11 @@ export class UsersRepository
     return false;
   }
 
-  // async findUsers(query: FindUsersQuery): Promise<User]> {
-  //   const where: QueryParams<UserOrmEntity> = removeUndefinedProps(query);
-  //   const users = await this.repository.find({ where });
-  //   return users.map((user) => this.mapper.toDomainEntity(user));
-  // }
+  async findUsers(query: FindUsersQuery): Promise<User[]> {
+    const where: QueryParams<UserOrmEntity> = removeUndefinedProps(query);
+    const users = await this.repository.find({ where });
+    return users.map((user) => this.mapper.toDomainEntity(user));
+  }
 
   // Used to construct a query
   protected prepareQuery(
