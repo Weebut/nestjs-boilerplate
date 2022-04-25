@@ -5,8 +5,16 @@ import { v1 } from '@infrastructure/configs/versions/v1';
 import { ConflictException } from '@libs/exceptions';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
 import { IdResponse } from '@libs/structure/interface-adapters/dtos/id-response.dto';
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { DeleteUserCommand } from './commands/delete-user/delete-user.command';
 import { UserAlreadyExistsError } from './errors/create-user.error';
 
 @Controller({ version: v1, path: usersRouteRoot })
@@ -29,5 +37,11 @@ export class UsersController {
       }
       throw err;
     }
+  }
+
+  @Delete(':userId')
+  async delete(@Param('userId', ParseUUIDPipe) userId: string) {
+    const command = new DeleteUserCommand({ userId });
+    await this.commandBus.execute(command);
   }
 }
