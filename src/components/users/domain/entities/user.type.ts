@@ -1,4 +1,5 @@
-export enum UserBoos {
-  bo = 'bo',
-  boo = 'boo',
+export enum UserRoles {
+  ADMIN = 'admin',
+  MODERATOR = 'moderator',
+  GUEST = 'guest',
 }

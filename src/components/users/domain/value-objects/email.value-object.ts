@@ -4,13 +4,13 @@ import {
 } from '@libs/structure/domain/base-classes/base-value-object';
 import { Guard } from '@libs/structure/domain/guard';
 
-export class Foo extends BaseValueObject<string> {
-  static minFooLength = 5;
-  static maxFooLength = 200;
+export class Email extends BaseValueObject<string> {
+  static minEmailLength = 5;
+  static maxEmailLength = 32;
 
   constructor(value: string) {
     super({ value });
-    this.props.value = Foo.format(value);
+    this.props.value = Email.format(value);
   }
 
   get value(): string {
@@ -18,9 +18,16 @@ export class Foo extends BaseValueObject<string> {
   }
 
   protected validate({ value }: DomainPrimitive<string>): void {
-    if (!Guard.lengthIsBetween(value, Foo.minFooLength, Foo.maxFooLength)) {
-      throw new Error('Oute of range: Email');
+    if (
+      !Guard.lengthIsBetween(value, Email.minEmailLength, Email.maxEmailLength)
+    ) {
+      throw new Error('Email');
     }
+    if (!value.includes('@')) {
+      throw new Error('Email has incorrect format');
+    }
+
+    // TODO : Validate more!
   }
 
   static format(email: string): string {
