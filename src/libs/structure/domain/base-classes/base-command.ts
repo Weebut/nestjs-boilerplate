@@ -1,4 +1,6 @@
+import { nanoid } from 'nanoid';
 import { Guard } from '../guard';
+import { UUID } from '../value-objects/uuid.value-object';
 
 export type BaseCommandProps<T> = Omit<T, 'correlationId' | 'id'> &
   Partial<BaseCommand>;
@@ -12,7 +14,7 @@ export class BaseCommand {
       throw new Error('Command props should not be empty');
     }
 
-    this.correlationId = props.correlationId;
-    this.id = props.id;
+    this.correlationId = props.correlationId || nanoid(8);
+    this.id = props.id || UUID.generate().unpack();
   }
 }
