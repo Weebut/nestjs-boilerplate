@@ -3,6 +3,7 @@ import { Name } from '@components/users/domain/value-objects/name.value-object';
 import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
 import { UUID } from '@libs/structure/domain/value-objects/uuid.value-object';
 import { UserCreatedDomainEvent } from '../events/user-created.domain-event';
+import { Portfolio } from './portfolio.entity';
 import { UserRoles } from './user.type';
 
 export interface CreateUserProps {
@@ -12,13 +13,17 @@ export interface CreateUserProps {
 
 export interface UserProps extends CreateUserProps {
   role: UserRoles;
+  portfolios: Portfolio[];
 }
 
 export class User extends BaseAggregateRoot<UserProps> {
   static create(props: CreateUserProps) {
     const id = UUID.generate();
 
-    const user = new User({ id, props: { ...props, role: UserRoles.GUEST } });
+    const user = new User({
+      id,
+      props: { ...props, role: UserRoles.GUEST, portfolios: [] },
+    });
 
     user.addEvent(
       new UserCreatedDomainEvent({
@@ -58,6 +63,8 @@ export class User extends BaseAggregateRoot<UserProps> {
   }
 
   validate(): void {
-    // TODO : Entity business rules validation to protect it's invariant
+    if (!this.props.portfolios) {
+      throw new Error('Portfolios should be defined');
+    }
   }
 }
