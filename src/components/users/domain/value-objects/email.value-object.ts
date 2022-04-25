@@ -6,7 +6,7 @@ import { Guard } from '@libs/structure/domain/guard';
 
 export class Email extends BaseValueObject<string> {
   static minEmailLength = 5;
-  static maxEmailLength = 32;
+  static maxEmailLength = 320;
 
   constructor(value: string) {
     super({ value });

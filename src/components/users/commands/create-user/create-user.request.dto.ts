@@ -10,7 +10,7 @@ import {
 
 export class CreateUserRequest implements CreateUser {
   @IsEmail()
-  @MaxLength(32)
+  @MaxLength(320)
   email: string;
 
   @Transform(({ value }) => value.trim())
