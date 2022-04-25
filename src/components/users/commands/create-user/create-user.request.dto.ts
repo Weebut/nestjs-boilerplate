@@ -17,20 +17,20 @@ export class CreateUserRequest implements CreateUser {
   @IsString()
   @IsNotEmpty()
   @MaxLength(32)
-  @MinLength(5)
+  @MinLength(1)
   familyName: string;
 
   @Transform(({ value }) => value.trim())
   @IsString()
   @IsNotEmpty()
   @MaxLength(32)
-  @MinLength(5)
+  @MinLength(1)
   givenName: string;
 
   @Transform(({ value }) => value.trim())
   @IsString()
   @IsNotEmpty()
   @MaxLength(32)
-  @MinLength(5)
+  @MinLength(2)
   nickname: string;
 }

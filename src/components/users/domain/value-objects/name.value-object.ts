@@ -10,6 +10,8 @@ interface NameProps {
 export class Name extends BaseValueObject<NameProps> {
   static minNameLength = 1;
   static maxNameLength = 32;
+  static minNicknameLength = 2;
+  static maxNicknameLength = 32;
 
   constructor(props: NameProps) {
     super({
@@ -53,8 +55,8 @@ export class Name extends BaseValueObject<NameProps> {
     if (
       !Guard.lengthIsBetween(
         props.nickname,
-        Name.minNameLength,
-        Name.maxNameLength,
+        Name.minNicknameLength,
+        Name.maxNicknameLength,
       )
     ) {
       throw new Error('nickname is out of range');
