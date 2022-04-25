@@ -5,4 +5,10 @@ export interface User {
     givenName: string;
     nickName: string;
   };
+  portfolios: {
+    id: string;
+    link: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
 }

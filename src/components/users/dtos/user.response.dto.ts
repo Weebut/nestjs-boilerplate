@@ -13,6 +13,15 @@ export class UserResponse extends BaseResponse implements User {
       givenName: props.name.givenName,
       nickName: props.name.nickname,
     };
+    this.portfolios =
+      props.portfolios?.map((portfolio) => {
+        return {
+          id: portfolio.id.value,
+          createdAt: portfolio.createdAt.value.toISOString(),
+          updatedAt: portfolio.updatedAt.value.toISOString(),
+          link: portfolio.link.value,
+        };
+      }) ?? [];
   }
 
   email: string;
@@ -21,4 +30,10 @@ export class UserResponse extends BaseResponse implements User {
     givenName: string;
     nickName: string;
   };
+  portfolios: {
+    id: string;
+    link: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
 }
