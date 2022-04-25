@@ -20,6 +20,7 @@ import { DeleteUserCommand } from './commands/delete-user/delete-user.command';
 import { User } from './domain/entities/user.entity';
 import { UserResponse } from './dtos/user.response.dto';
 import { UserAlreadyExistsError } from './errors/create-user.error';
+import { FindOneUserQuery } from './queries/find-one-user/find-one-user.query';
 import { FindUsersQuery } from './queries/find-users/find-users.query';
 import { FindUsersRequest } from './queries/find-users/find-users.request.dto';
 
@@ -51,6 +52,14 @@ export class UsersController {
     const result = await this.queryBus.execute(query);
 
     return result.map((user: User) => new UserResponse(user));
+  }
+
+  @Get(':userId')
+  async findUser(@Param('userId', ParseUUIDPipe) userId: string) {
+    const query = new FindOneUserQuery({ userId });
+    const result = await this.queryBus.execute(query);
+
+    return new UserResponse(result);
   }
 
   @Delete(':userId')
