@@ -1,12 +1,13 @@
-import { BaseCommandHandler } from '@libs/structure/domain/base-classes/base-command-handler';
 import { CreateUserCommand } from '@components/users/commands/create-user/create-user.command';
-import { User } from '@components/users/domain/entities/user.entity';
-import { Name } from '@components/users/domain/value-objects/name.value-object';
-import { CommandHandler } from '@nestjs/cqrs';
-import { ID } from '@libs/structure/domain/value-objects/id.value-object';
-import { Email } from '@components/users/domain/value-objects/email.value-object';
-import { UnitOfWork } from '@infrastructure/database/unit-of-work/unit-of-work';
 import { UsersRepositoryPort } from '@components/users/database/users.repository.port';
+import { User } from '@components/users/domain/entities/user.entity';
+import { Email } from '@components/users/domain/value-objects/email.value-object';
+import { Name } from '@components/users/domain/value-objects/name.value-object';
+import { UserAlreadyExistsError } from '@components/users/errors/create-user.error';
+import { UnitOfWork } from '@infrastructure/database/unit-of-work/unit-of-work';
+import { BaseCommandHandler } from '@libs/structure/domain/base-classes/base-command-handler';
+import { ID } from '@libs/structure/domain/value-objects/id.value-object';
+import { CommandHandler } from '@nestjs/cqrs';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler extends BaseCommandHandler<ID> {
@@ -19,7 +20,7 @@ export class CreateUserCommandHandler extends BaseCommandHandler<ID> {
       this.unitOfWork.getUsersRepository(command.correlationId);
 
     if (await usersRepository.exists(command.email)) {
-      throw new Error('User already exists');
+      throw new UserAlreadyExistsError();
     }
 
     const user = User.create({
