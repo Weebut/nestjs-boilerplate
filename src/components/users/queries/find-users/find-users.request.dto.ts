@@ -1,3 +1,3 @@
-import { FindUsers } from '@interface-adapters/interfaces/user/find-users.interface';
+import { FindUsers } from '@interface-adapters/interfaces/users/find-users.interface';
 
 export class FindUsersRequest implements FindUsers {}

@@ -1,4 +1,4 @@
-import { User } from '@interface-adapters/interfaces/user/user.interface';
+import { User } from '@interface-adapters/interfaces/users/user.interface';
 import { BaseResponse } from '@libs/structure/interface-adapters/base-classes/base-response';
 import { User as UserEntity } from '../domain/entities/user.entity';
 

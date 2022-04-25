@@ -1,4 +1,4 @@
-import { CreateUser } from '@interface-adapters/interfaces/user/create-user.interface';
+import { CreateUser } from '@interface-adapters/interfaces/users/create-user.interface';
 import { Transform } from 'class-transformer';
 import {
   IsEmail,
