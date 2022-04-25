@@ -6,14 +6,22 @@ import { CommandHandler } from '@nestjs/cqrs';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
 import { Email } from '@components/users/domain/value-objects/email.value-object';
 import { UnitOfWork } from '@infrastructure/database/unit-of-work/unit-of-work';
+import { UsersRepositoryPort } from '@components/users/database/users.repository.port';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler extends BaseCommandHandler<ID> {
-  constructor(unitOfWork: UnitOfWork) {
+  constructor(protected readonly unitOfWork: UnitOfWork) {
     super(unitOfWork);
   }
 
   async handle(command: CreateUserCommand): Promise<ID> {
+    const usersRepository: UsersRepositoryPort =
+      this.unitOfWork.getUsersRepository(command.correlationId);
+
+    if (await usersRepository.exists(command.email)) {
+      throw new Error('User already exists');
+    }
+
     const user = User.create({
       email: new Email(command.email),
       name: new Name({
@@ -23,8 +31,10 @@ export class CreateUserCommandHandler extends BaseCommandHandler<ID> {
       }),
     });
 
-    // TODO : Persist user entity
+    user.someBusinessLogic();
 
-    return user.id;
+    const created = await usersRepository.save(user);
+
+    return created.id;
   }
 }
