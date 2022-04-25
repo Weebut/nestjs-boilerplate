@@ -1,6 +1,6 @@
 import { Email } from '@components/users/domain/value-objects/email.value-object';
 import { Name } from '@components/users/domain/value-objects/name.value-object';
-import { BaseEntity } from '@libs/structure/domain/base-classes/base-entity';
+import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
 import { UUID } from '@libs/structure/domain/value-objects/uuid.value-object';
 import { UserRoles } from './user.type';
 
@@ -13,7 +13,7 @@ export interface UserProps extends CreateUserProps {
   role: UserRoles;
 }
 
-export class User extends BaseEntity<UserProps> {
+export class User extends BaseAggregateRoot<UserProps> {
   static create(props: CreateUserProps) {
     const id = UUID.generate();
 
