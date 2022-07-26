@@ -21,6 +21,7 @@
     "paths": {
       "@common/*": ["src/common/*"],
       "@components/*": ["src/components/*"],
+      "@controllers/*": ["src/controllers/*"],
       "@infrastructure/*": ["src/infrastructure/*"],
       "@interface-adapters/*": ["src/interface-adapters/*"],
       "@libs/*": ["src/libs/*"]

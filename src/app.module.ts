@@ -6,8 +6,8 @@ import { TypeormConfigModule } from '@infrastructure/configs/typeorm/typeorm.mod
 import { UnitOfWorkModule } from '@infrastructure/database/unit-of-work/unit-of-work.module';
 import { DomainEventsPubSubModule } from '@infrastructure/domain-events-pubsub/domain-events-pubsub.module';
 import { Module } from '@nestjs/common';
-import { AppController } from 'src/app.controller';
-import { AppService } from 'src/app.service';
+import { NeutralControllersModule } from './controllers/neutral/neutral-controllers.module';
+import { V1ControllersModule } from './controllers/v1/v1-controllers.module';
 
 @Module({
   imports: [
@@ -18,8 +18,8 @@ import { AppService } from 'src/app.service';
     UnitOfWorkModule,
     DomainEventsPubSubModule,
     ComponentsModule,
+    NeutralControllersModule,
+    V1ControllersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
+import { User as UserEntity } from '@components/users/domain/entities/user.entity';
 import { User } from '@interface-adapters/interfaces/users/user.interface';
 import { BaseResponse } from '@libs/structure/interface-adapters/base-classes/base-response';
-import { User as UserEntity } from '../domain/entities/user.entity';
 
 export class UserResponse extends BaseResponse implements User {
   constructor(user: UserEntity) {
