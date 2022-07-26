@@ -3,17 +3,18 @@ import { UnitOfWorkProviderName } from '@infrastructure/database/unit-of-work/un
 import { BaseDomainEventHandler } from '@libs/structure/domain/base-classes/base-domain-event-handler';
 import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';
 import { Inject } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 
 export class SendEmailWhenUserIsCreatedDomainEventHandler extends BaseDomainEventHandler {
   constructor(
     @Inject(UnitOfWorkProviderName)
     protected readonly unitOfWork: UnitOfWorkPort,
   ) {
-    super(UserCreatedDomainEvent);
+    super();
   }
 
+  @OnEvent(UserCreatedDomainEvent.name)
   async handle(event: UserCreatedDomainEvent) {
-    // TODO : Send email
-    console.log('welcome', event.nickname);
+    console.log(`Email sent to ${event.email}`); // TODO : Send email
   }
 }

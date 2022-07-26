@@ -1,5 +1,6 @@
 import { NotFoundException } from '@libs/exceptions';
 import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
+import { DomainEventsPubSubPort } from '@libs/structure/domain/ports/domain-events-pubsub.port';
 import { Logger } from '@libs/structure/domain/ports/logger.port';
 import {
   DataWithPaginationMeta,
@@ -7,7 +8,6 @@ import {
   QueryParams,
   RepositoryPort,
 } from '@libs/structure/domain/ports/repository.port';
-import { DomainEventsPubSub } from '@libs/structure/domain/pubsub/domain-events.pubsub';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { BaseOrmMapper } from './base-orm-mapper';
@@ -22,6 +22,7 @@ export abstract class BaseTypeormRepository<
     protected readonly repository: Repository<OrmEntity>,
     protected readonly mapper: BaseOrmMapper<Entity, OrmEntity>,
     protected readonly logger: Logger,
+    protected readonly eventPubSub: DomainEventsPubSubPort,
   ) {}
 
   /**
@@ -40,8 +41,8 @@ export abstract class BaseTypeormRepository<
     entity.validate(); // Protecting invariant before saving
     const ormEntity = this.mapper.toOrmEntity(entity);
     const result = await this.repository.save(ormEntity);
-    await DomainEventsPubSub.publishEvents(
-      entity.id,
+    await this.eventPubSub.publishEvents(
+      entity,
       this.logger,
       this.correlationId,
     );
@@ -59,11 +60,7 @@ export abstract class BaseTypeormRepository<
     const result = await this.repository.save(ormEntities);
     await Promise.all(
       entities.map((entity) =>
-        DomainEventsPubSub.publishEvents(
-          entity.id,
-          this.logger,
-          this.correlationId,
-        ),
+        this.eventPubSub.publishEvents(entity, this.logger, this.correlationId),
       ),
     );
     this.logger.debug(
@@ -140,8 +137,8 @@ export abstract class BaseTypeormRepository<
   async delete(entity: Entity): Promise<Entity> {
     entity.validate();
     await this.repository.remove(this.mapper.toOrmEntity(entity));
-    await DomainEventsPubSub.publishEvents(
-      entity.id,
+    await this.eventPubSub.publishEvents(
+      entity,
       this.logger,
       this.correlationId,
     );

@@ -1,9 +1,11 @@
+import { DomainEventsPubSubName } from '@infrastructure/domain-events-pubsub/domain-events-pubsub.module';
 import { ContextLogger } from '@infrastructure/logger/context-logger';
 import { NotFoundException } from '@libs/exceptions';
+import { DomainEventsPubSubPort } from '@libs/structure/domain/ports/domain-events-pubsub.port';
 import { QueryParams } from '@libs/structure/domain/ports/repository.port';
 import { BaseTypeormRepository } from '@libs/structure/infrastructure/database/base-classes/base-typeorm-repository';
 import { removeUndefinedProps } from '@libs/utils/remove-undefined-props.util';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { User, UserProps } from '../domain/entities/user.entity';
@@ -20,11 +22,14 @@ export class UsersRepository
   constructor(
     @InjectRepository(UserOrmEntity)
     private readonly usersRepository: Repository<UserOrmEntity>,
+    @Inject(DomainEventsPubSubName)
+    eventPubSub: DomainEventsPubSubPort,
   ) {
     super(
       usersRepository,
       new UserOrmMapper(User, UserOrmEntity),
-      new ContextLogger('UsersRepository'),
+      new ContextLogger(UsersRepository.name),
+      eventPubSub,
     );
   }
 
