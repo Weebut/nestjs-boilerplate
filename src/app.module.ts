@@ -1,4 +1,5 @@
 import { ComponentsModule } from '@components/components.module';
+import { BullConfigModule } from '@infrastructure/configs/bull/bull.module';
 import { EnvironmentConfigModule } from '@infrastructure/configs/environment/environment.module';
 import { EventEmitterConfigModule } from '@infrastructure/configs/event-emitter/event-emitter.module';
 import { TypeormConfigModule } from '@infrastructure/configs/typeorm/typeorm.module';
@@ -10,6 +11,7 @@ import { AppService } from 'src/app.service';
 
 @Module({
   imports: [
+    BullConfigModule,
     EnvironmentConfigModule,
     EventEmitterConfigModule,
     TypeormConfigModule,

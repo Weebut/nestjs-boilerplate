@@ -28,4 +28,12 @@ export class EnvironmentConfigService {
   getDatabaseSync(): boolean {
     return this.configService.get<boolean>('DATABASE_SYNC');
   }
+
+  getRedisHost(): string {
+    return this.configService.get<string>('REDIS_HOST');
+  }
+
+  getRedisPort(): number {
+    return Number(this.configService.get<number>('REDIS_PORT'));
+  }
 }
