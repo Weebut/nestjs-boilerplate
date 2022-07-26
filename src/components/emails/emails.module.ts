@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
-import EventHandlerProviders from './applications/event-handlers/providers';
+import { SendEmailWhenUserIsCreatedDomainEventHandler } from './applications/event-handlers/send-email-when-user-created.event-handler';
+
+const EventHandlerProviders = [SendEmailWhenUserIsCreatedDomainEventHandler];
 
 @Module({
   providers: [...EventHandlerProviders],
