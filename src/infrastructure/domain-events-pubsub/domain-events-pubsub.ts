@@ -20,12 +20,14 @@ export class DomainEventsPubSub implements DomainEventsPubSubPort {
       )}] published ${aggregate.id.value}`,
     );
 
-    aggregate.domainEvents.map((event: BaseDomainEvent) => {
+    const promises = aggregate.domainEvents.map((event: BaseDomainEvent) => {
       if (correlationId && !event.correlationId) {
         event.correlationId = correlationId;
       }
       return this.publish(event, logger);
     });
+
+    await Promise.all(promises);
 
     aggregate.clearEvents();
   }
