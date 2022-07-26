@@ -1,18 +1,21 @@
-import { UnitOfWork } from '@infrastructure/database/unit-of-work/unit-of-work';
+import { TypeormUnitOfWork } from '@infrastructure/database/unit-of-work/typeorm.unit-of-work';
 import { ContextLogger } from '@infrastructure/logger/context-logger';
 import { Global, Module } from '@nestjs/common';
+import { DataSource } from 'typeorm';
 
-const unitOfWorkSingleton = new UnitOfWork(new ContextLogger());
+export const UnitOfWorkProviderName = 'UnitOfWork';
 
-const unitOfWorkSingletonProvider = {
-  provide: UnitOfWork,
-  useFactory: () => unitOfWorkSingleton,
+const unitOfWorkProvider = {
+  provide: UnitOfWorkProviderName,
+  inject: [DataSource],
+  useFactory: (source: DataSource) =>
+    new TypeormUnitOfWork(source, new ContextLogger()),
 };
 
 @Global()
 @Module({
   imports: [],
-  providers: [unitOfWorkSingletonProvider],
-  exports: [UnitOfWork],
+  providers: [unitOfWorkProvider],
+  exports: [UnitOfWorkProviderName],
 })
 export class UnitOfWorkModule {}

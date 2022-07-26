@@ -1,8 +1,8 @@
 import { BaseCommand } from '@libs/structure/domain/base-classes/base-command';
-import { UnitOfWorkPort } from '../ports/unit-of-work.port';
+import { BaseUnitOfWork } from './base-unit-of-work';
 
 export abstract class BaseCommandHandler<ReturnType = never> {
-  constructor(protected readonly unitOfWork: UnitOfWorkPort) {}
+  constructor(protected readonly unitOfWork: BaseUnitOfWork) {}
 
   abstract handle(command: BaseCommand): Promise<ReturnType>;
 

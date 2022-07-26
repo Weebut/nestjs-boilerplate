@@ -1,6 +1,7 @@
 import { Logger } from '@libs/structure/domain/ports/logger.port';
-import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';
-import { EntityTarget, getConnection, QueryRunner, Repository } from 'typeorm';
+import { BaseUnitOfWork } from '@libs/structure/domain/base-classes/base-unit-of-work';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource, EntityTarget, QueryRunner, Repository } from 'typeorm';
 import { IsolationLevel } from 'typeorm/driver/types/IsolationLevel';
 
 /**
@@ -15,8 +16,12 @@ import { IsolationLevel } from 'typeorm/driver/types/IsolationLevel';
  * Read more about mikro-orm unit of work:
  * https://mikro-orm.io/docs/unit-of-work/.
  */
-export class TypeormUnitOfWork implements UnitOfWorkPort {
-  constructor(private readonly logger: Logger) {}
+export class BaseTypeormUnitOfWork implements BaseUnitOfWork {
+  constructor(
+    @InjectDataSource()
+    private readonly dataSource: DataSource,
+    private readonly logger: Logger,
+  ) {}
 
   private queryRunners: Map<string, QueryRunner> = new Map();
 
@@ -53,7 +58,7 @@ export class TypeormUnitOfWork implements UnitOfWorkPort {
       throw new Error('Correlation ID must be provided');
     }
     this.logger.setContext(`${this.constructor.name}:${correlationId}`);
-    const queryRunner = getConnection().createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
     this.queryRunners.set(correlationId, queryRunner);
     this.logger.debug(`[Starting transaction]`);
     await queryRunner.startTransaction(options?.isolationLevel);

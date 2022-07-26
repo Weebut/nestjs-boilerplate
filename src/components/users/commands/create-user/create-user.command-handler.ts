@@ -4,14 +4,19 @@ import { User } from '@components/users/domain/entities/user.entity';
 import { Email } from '@components/users/domain/value-objects/email.value-object';
 import { Name } from '@components/users/domain/value-objects/name.value-object';
 import { UserAlreadyExistsError } from '@components/users/errors/create-user.error';
-import { UnitOfWork } from '@infrastructure/database/unit-of-work/unit-of-work';
+import { UnitOfWorkProviderName } from '@infrastructure/database/unit-of-work/unit-of-work.module';
 import { BaseCommandHandler } from '@libs/structure/domain/base-classes/base-command-handler';
+import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
+import { Inject } from '@nestjs/common';
 import { CommandHandler } from '@nestjs/cqrs';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler extends BaseCommandHandler<ID> {
-  constructor(protected readonly unitOfWork: UnitOfWork) {
+  constructor(
+    @Inject(UnitOfWorkProviderName)
+    protected readonly unitOfWork: UnitOfWorkPort,
+  ) {
     super(unitOfWork);
   }
 

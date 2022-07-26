@@ -1,9 +1,14 @@
 import { UserCreatedDomainEvent } from '@components/users/domain/events/user-created.domain-event';
-import { UnitOfWork } from '@infrastructure/database/unit-of-work/unit-of-work';
+import { UnitOfWorkProviderName } from '@infrastructure/database/unit-of-work/unit-of-work.module';
 import { BaseDomainEventHandler } from '@libs/structure/domain/base-classes/base-domain-event-handler';
+import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';
+import { Inject } from '@nestjs/common';
 
 export class SendEmailWhenUserIsCreatedDomainEventHandler extends BaseDomainEventHandler {
-  constructor(private readonly unitOfWork: UnitOfWork) {
+  constructor(
+    @Inject(UnitOfWorkProviderName)
+    protected readonly unitOfWork: UnitOfWorkPort,
+  ) {
     super(UserCreatedDomainEvent);
   }
 
