@@ -2,7 +2,7 @@ import { ArgumentNotProvidedException } from '@libs/exceptions';
 import { Guard } from '@libs/structure/domain/guard';
 import { UUID } from '@libs/structure/domain/value-objects/uuid.value-object';
 
-export type DomainEventProps<T> = Omit<
+export type BaseDomainEventProps<T> = Omit<
   T,
   'id' | 'correlationId' | 'dateOccurred'
 > &
@@ -19,7 +19,7 @@ export abstract class BaseDomainEvent {
   public correlationId: string;
   public causationId?: string;
 
-  constructor(props: DomainEventProps<unknown>) {
+  constructor(props: BaseDomainEventProps<unknown>) {
     if (Guard.isEmpty(props)) {
       throw new ArgumentNotProvidedException(
         'DomainEvent props should not be empty',
