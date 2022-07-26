@@ -1,14 +1,11 @@
 import { ContextLogger } from '@infrastructure/logger/context-logger';
 import { NotFoundException } from '@libs/exceptions';
 import { QueryParams } from '@libs/structure/domain/ports/repository.port';
-import {
-  BaseTypeormRepository,
-  WhereCondition,
-} from '@libs/structure/infrastructure/database/base-classes/base-typeorm-repository';
+import { BaseTypeormRepository } from '@libs/structure/infrastructure/database/base-classes/base-typeorm-repository';
 import { removeUndefinedProps } from '@libs/utils/remove-undefined-props.util';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { User, UserProps } from '../domain/entities/user.entity';
 import { FindUsersQuery } from '../queries/find-users/find-users.query';
 import { UserOrmEntity } from './user.orm-entity';
@@ -77,7 +74,7 @@ export class UsersRepository
   }
 
   async findUsers(query: FindUsersQuery): Promise<User[]> {
-    const where: QueryParams<UserOrmEntity> = removeUndefinedProps(query);
+    const where: FindOptionsWhere<UserOrmEntity> = removeUndefinedProps(query);
     const users = await this.repository.find({
       where,
       relations: this.relations,
@@ -88,23 +85,24 @@ export class UsersRepository
   // Used to construct a query
   protected prepareQuery(
     params: QueryParams<UserProps>,
-  ): WhereCondition<UserOrmEntity> {
-    const where: QueryParams<UserOrmEntity> = {};
+  ): FindOptionsWhere<UserOrmEntity> {
+    const where: FindOptionsWhere<UserOrmEntity> = {};
     if (params.id) {
       where.id = params.id.value;
     }
-    if (params.createdAt) {
-      where.createdAt = params.createdAt.value;
-    }
+
     if (params.name?.familyName) {
       where.familyName = params.name.familyName;
     }
+
     if (params.name?.givenName) {
       where.givenName = params.name.givenName;
     }
+
     if (params.name?.nickname) {
       where.nickname = params.name.nickname;
     }
+
     return where;
   }
 }

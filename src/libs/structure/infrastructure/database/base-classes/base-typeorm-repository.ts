@@ -9,14 +9,8 @@ import {
 } from '@libs/structure/domain/ports/repository.port';
 import { DomainEventsPubSub } from '@libs/structure/domain/pubsub/domain-events.pubsub';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
-import { FindConditions, ObjectLiteral, Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { BaseOrmMapper } from './base-orm-mapper';
-
-export type WhereCondition<OrmEntity> =
-  | FindConditions<OrmEntity>[]
-  | FindConditions<OrmEntity>
-  | ObjectLiteral
-  | string;
 
 export abstract class BaseTypeormRepository<
   Entity extends BaseAggregateRoot<unknown>,
@@ -40,7 +34,7 @@ export abstract class BaseTypeormRepository<
 
   protected abstract prepareQuery(
     params: QueryParams<EntityProps>,
-  ): WhereCondition<OrmEntity>;
+  ): FindOptionsWhere<OrmEntity>;
 
   async save(entity: Entity): Promise<Entity> {
     entity.validate(); // Protecting invariant before saving
@@ -99,7 +93,9 @@ export abstract class BaseTypeormRepository<
 
   async findOneByIdOrThrow(id: ID | string): Promise<Entity> {
     const found = await this.repository.findOne({
-      where: { id: id instanceof ID ? id.value : id },
+      where: {
+        id: id instanceof ID ? id.value : id,
+      } as FindOptionsWhere<unknown>,
     });
     if (!found) {
       throw new NotFoundException('Not found');
@@ -127,7 +123,7 @@ export abstract class BaseTypeormRepository<
       skip: pagination?.skip,
       take: pagination?.limit,
       where: this.prepareQuery(params),
-      order: orderBy,
+      order: orderBy as any,
       relations: this.relations,
     });
 
