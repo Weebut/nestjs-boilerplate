@@ -56,7 +56,7 @@ export class UserOrmMapper extends BaseOrmMapper<User, UserOrmEntity> {
           const id = new UUID(portfolio.id);
           const { link, isPublic } = portfolio;
 
-          return new Portfolio({
+          return new PortfolioEntity({
             id,
             props: { link: new URL(link), isPublic },
           });

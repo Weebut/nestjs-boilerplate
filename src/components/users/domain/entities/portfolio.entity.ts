@@ -11,11 +11,11 @@ export interface PortfolioProps extends CreatePortfolioProps {
   isPublic: boolean;
 }
 
-export class Portfolio extends BaseEntity<PortfolioProps> {
+export class PortfolioEntity extends BaseEntity<PortfolioProps> {
   static create(props: CreatePortfolioProps) {
     const id = UUID.generate();
 
-    const portfolio = new Portfolio({
+    const portfolio = new PortfolioEntity({
       id,
       props: { ...props, isPublic: false },
     });

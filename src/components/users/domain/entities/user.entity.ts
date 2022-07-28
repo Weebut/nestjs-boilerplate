@@ -3,7 +3,7 @@ import { Name } from '@components/users/domain/value-objects/name.value-object';
 import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
 import { UUID } from '@libs/structure/domain/value-objects/uuid.value-object';
 import { UserCreatedDomainEvent } from '../events/user-created.domain-event';
-import { Portfolio } from './portfolio.entity';
+import { PortfolioEntity } from './portfolio.entity';
 import { UserRoles } from './user.type';
 
 export interface CreateUserProps {
@@ -13,7 +13,7 @@ export interface CreateUserProps {
 
 export interface UserProps extends CreateUserProps {
   role: UserRoles;
-  portfolios: Portfolio[];
+  portfolios: PortfolioEntity[];
 }
 
 export class User extends BaseAggregateRoot<UserProps> {
