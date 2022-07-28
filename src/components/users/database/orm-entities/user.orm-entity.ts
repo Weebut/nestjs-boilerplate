@@ -1,6 +1,6 @@
 import { BaseTypeormEntity } from '@libs/structure/infrastructure/database/base-classes/base-typeorm-entity';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { UserRoles } from '../domain/entities/user.type';
+import { UserRoles } from '../../domain/entities/user.type';
 import { PortfolioOrmEntity } from './portfolio.orm-entity';
 
 @Entity('user')

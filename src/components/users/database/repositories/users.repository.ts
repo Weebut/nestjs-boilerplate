@@ -1,3 +1,5 @@
+import { User, UserProps } from '@components/users/domain/entities/user.entity';
+import { FindUsersQuery } from '@components/users/queries/find-users/find-users.query';
 import { DomainEventsPubSubName } from '@infrastructure/domain-events-pubsub/domain-events-pubsub.module';
 import { ContextLogger } from '@infrastructure/logger/context-logger';
 import { NotFoundException } from '@libs/exceptions';
@@ -8,10 +10,8 @@ import { removeUndefinedProps } from '@libs/utils/remove-undefined-props.util';
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { User, UserProps } from '../domain/entities/user.entity';
-import { FindUsersQuery } from '../queries/find-users/find-users.query';
-import { UserOrmEntity } from './user.orm-entity';
-import { UserOrmMapper } from './user.orm.mapper';
+import { UserOrmEntity } from '../orm-entities/user.orm-entity';
+import { UserOrmMapper } from '../orm-mappers/user.orm.mapper';
 import { UsersRepositoryPort } from './users.repository.port';
 
 @Injectable()

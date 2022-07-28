@@ -1,5 +1,5 @@
 import { RepositoryPort } from '@libs/structure/domain/ports/repository.port';
-import { User, UserProps } from '../domain/entities/user.entity';
+import { User, UserProps } from '../../domain/entities/user.entity';
 
 /* Repository port belongs to application's core, but since it usually
  changes together with repository it is kept in the same directory for

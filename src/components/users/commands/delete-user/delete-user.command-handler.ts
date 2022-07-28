@@ -1,4 +1,4 @@
-import { UsersRepositoryPort } from '@components/users/database/users.repository.port';
+import { UsersRepositoryPort } from '@components/users/database/repositories/users.repository.port';
 import { UnitOfWorkProviderName } from '@infrastructure/database/unit-of-work/unit-of-work.module';
 import { BaseCommandHandler } from '@libs/structure/domain/base-classes/base-command-handler';
 import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';

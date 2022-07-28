@@ -1,5 +1,5 @@
-import { UserOrmEntity } from '@components/users/database/user.orm-entity';
-import { UsersRepository } from '@components/users/database/users.repository';
+import { UserOrmEntity } from '@components/users/database/orm-entities/user.orm-entity';
+import { UsersRepository } from '@components/users/database/repositories/users.repository';
 import { DomainEventsPubSubPort } from '@libs/structure/domain/ports/domain-events-pubsub.port';
 import { Logger } from '@libs/structure/domain/ports/logger.port';
 import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';

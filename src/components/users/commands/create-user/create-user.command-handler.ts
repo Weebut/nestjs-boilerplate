@@ -1,5 +1,5 @@
 import { CreateUserCommand } from '@components/users/commands/create-user/create-user.command';
-import { UsersRepositoryPort } from '@components/users/database/users.repository.port';
+import { UsersRepositoryPort } from '@components/users/database/repositories/users.repository.port';
 import { User } from '@components/users/domain/entities/user.entity';
 import { Email } from '@components/users/domain/value-objects/email.value-object';
 import { Name } from '@components/users/domain/value-objects/name.value-object';

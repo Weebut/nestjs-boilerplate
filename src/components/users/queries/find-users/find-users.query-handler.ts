@@ -1,4 +1,4 @@
-import { UsersRepository } from '@components/users/database/users.repository';
+import { UsersRepository } from '@components/users/database/repositories/users.repository';
 import { User } from '@components/users/domain/entities/user.entity';
 import { BaseQueryHandler } from '@libs/structure/domain/base-classes/base-query-handler';
 import { QueryHandler } from '@nestjs/cqrs';
