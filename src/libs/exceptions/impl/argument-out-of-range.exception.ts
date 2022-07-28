@@ -10,4 +10,8 @@ import { ExceptionCodes } from '../types/exception.type';
  */
 export class ArgumentOutOfRangeException extends BaseException {
   readonly code = ExceptionCodes.ARGUMENT_OUT_OF_RANGE;
+
+  constructor(message: string) {
+    super(message, 400);
+  }
 }

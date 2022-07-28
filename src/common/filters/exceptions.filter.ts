@@ -70,24 +70,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message: exception.getResponse() as ErrorInterface,
       };
     } else if (exception instanceof BaseException) {
-      let status = 400;
-
-      if (exception instanceof NotFoundException) {
-        status = 404;
-      }
-
-      if (exception instanceof ConflictException) {
-        status = 409;
-      }
-
       return {
-        status,
+        status: exception.httpStatusCode,
         message: {
           message: exception.message,
           error: exception.code,
         },
       };
     }
+
     return {
       status: 500,
       message: {

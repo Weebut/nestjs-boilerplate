@@ -9,4 +9,8 @@ import { ExceptionCodes } from '../types/exception.type';
  */
 export class ArgumentInvalidException extends BaseException {
   readonly code = ExceptionCodes.ARGUMENT_INVALID;
+
+  constructor(message: string) {
+    super(message, 400);
+  }
 }

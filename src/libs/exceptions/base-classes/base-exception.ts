@@ -2,6 +2,7 @@ export interface SerializedException {
   message: string;
   code: string;
   stack?: string;
+  httpStatusCode?: number;
   metadata?: unknown;
   /**
    * ^ Consider adding optional `metadata` object to
@@ -28,7 +29,11 @@ export abstract class BaseException extends Error {
    * in application's log files. Only include non-sensitive
    * info that may help with debugging.
    */
-  constructor(readonly message: string, readonly metadata?: unknown) {
+  constructor(
+    readonly message: string,
+    readonly httpStatusCode?: number,
+    readonly metadata?: unknown,
+  ) {
     super(message);
     Error.captureStackTrace(this, this.constructor);
   }
@@ -45,6 +50,7 @@ export abstract class BaseException extends Error {
   toJSON(): SerializedException {
     return {
       message: this.message,
+      httpStatusCode: this.httpStatusCode ?? 400,
       code: this.code,
       stack: this.stack,
       metadata: this.metadata,

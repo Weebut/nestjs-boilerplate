@@ -9,4 +9,8 @@ import { ExceptionCodes } from '../types/exception.type';
  */
 export class ArgumentNotProvidedException extends BaseException {
   readonly code = ExceptionCodes.ARGUMENT_NOT_PROVIDED;
+
+  constructor(message: string) {
+    super(message, 400);
+  }
 }
