@@ -1,11 +1,10 @@
 import { CreateUserCommand } from '@components/users/commands/create-user/create-user.command';
-import { CreateUserRequest } from '@components/users/commands/create-user/create-user.request.dto';
 import { DeleteUserCommand } from '@components/users/commands/delete-user/delete-user.command';
 import { User } from '@components/users/domain/entities/user.entity';
 import { UserAlreadyExistsError } from '@components/users/errors/create-user.error';
 import { FindOneUserQuery } from '@components/users/queries/find-one-user/find-one-user.query';
 import { FindUsersQuery } from '@components/users/queries/find-users/find-users.query';
-import { FindUsersRequest } from '@components/users/queries/find-users/find-users.request.dto';
+import { CreateUserRequest } from '@controllers/v1/users/dtos/request/commands/create-user.request.dto';
 import { v1 } from '@infrastructure/configs/versions/v1';
 import { ConflictException } from '@libs/exceptions';
 import { ID } from '@libs/structure/domain/value-objects/id.value-object';
@@ -22,7 +21,8 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { usersRouteRoot } from './constants/route';
-import { UserResponse } from './dtos/user.response.dto';
+import { FindUsersRequest } from './dtos/request/queries/find-users.request.dto';
+import { UserResponse } from './dtos/response/user.response.dto';
 
 @Controller({ version: v1, path: usersRouteRoot })
 export class UsersController {
