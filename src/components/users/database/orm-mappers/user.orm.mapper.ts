@@ -1,14 +1,14 @@
+import { PortfolioEntity } from '@components/users/domain/entities/portfolio.entity';
+import { User, UserProps } from '@components/users/domain/entities/user.entity';
+import { Email } from '@components/users/domain/value-objects/email.value-object';
+import { Name } from '@components/users/domain/value-objects/name.value-object';
+import { URL } from '@components/users/domain/value-objects/url.value-object';
 import { UUID } from '@libs/structure/domain/value-objects/uuid.value-object';
 import {
   BaseOrmMapper,
   EntityProps,
   OrmEntityProps,
 } from '@libs/structure/infrastructure/database/base-classes/base-orm-mapper';
-import { Portfolio } from '../../domain/entities/portfolio.entity';
-import { User, UserProps } from '../../domain/entities/user.entity';
-import { Email } from '../../domain/value-objects/email.value-object';
-import { URL } from '../../domain/value-objects/url.value-object';
-import { Name } from '../../domain/value-objects/name.value-object';
 import { PortfolioOrmEntity } from '../orm-entities/portfolio.orm-entity';
 import { UserOrmEntity } from '../orm-entities/user.orm-entity';
 
