@@ -1,6 +1,7 @@
 import { User as UserEntity } from '@components/users/domain/entities/user.entity';
 import { User } from '@interface-adapters/interfaces/users/user.interface';
 import { BaseResponse } from '@libs/structure/interface-adapters/base-classes/base-response';
+import { PortfolioResponse } from './portfolio.response.dto';
 
 export class UserResponse extends BaseResponse implements User {
   constructor(user: UserEntity) {
@@ -14,26 +15,15 @@ export class UserResponse extends BaseResponse implements User {
       nickName: props.name.nickname,
     };
     this.portfolios =
-      props.portfolios?.map((portfolio) => {
-        return {
-          id: portfolio.id.value,
-          createdAt: portfolio.createdAt.value.toISOString(),
-          updatedAt: portfolio.updatedAt.value.toISOString(),
-          link: portfolio.link.value,
-        };
-      }) ?? [];
+      props.portfolios?.map((portfolio) => new PortfolioResponse(portfolio)) ??
+      [];
   }
 
-  email: string;
-  name: {
+  readonly email: string;
+  readonly name: {
     familyName: string;
     givenName: string;
     nickName: string;
   };
-  portfolios: {
-    id: string;
-    link: string;
-    createdAt: string;
-    updatedAt: string;
-  }[];
+  readonly portfolios: PortfolioResponse[];
 }
