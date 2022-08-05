@@ -1,7 +1,7 @@
 import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
 import { BaseDomainEvent } from '@libs/structure/domain/base-classes/base-domain-event';
 import { DomainEventsPubSubPort } from '@libs/structure/domain/ports/domain-events-pubsub.port';
-import { Logger } from '@libs/structure/domain/ports/logger.port';
+import { LoggerPort } from '@libs/structure/domain/ports/logger.port';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
@@ -11,7 +11,7 @@ export class DomainEventsPubSub implements DomainEventsPubSubPort {
 
   async publishEvents(
     aggregate: BaseAggregateRoot<unknown>,
-    logger: Logger,
+    logger: LoggerPort,
     correlationId?: string,
   ): Promise<void> {
     logger.debug(
@@ -32,7 +32,10 @@ export class DomainEventsPubSub implements DomainEventsPubSubPort {
     aggregate.clearEvents();
   }
 
-  private async publish(event: BaseDomainEvent, logger: Logger): Promise<void> {
+  private async publish(
+    event: BaseDomainEvent,
+    logger: LoggerPort,
+  ): Promise<void> {
     const eventName: string = event.constructor.name;
 
     try {

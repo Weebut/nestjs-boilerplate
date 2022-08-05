@@ -1,7 +1,7 @@
 import { NotFoundException } from '@libs/exceptions';
 import { BaseAggregateRoot } from '@libs/structure/domain/base-classes/base-aggregate-root';
 import { DomainEventsPubSubPort } from '@libs/structure/domain/ports/domain-events-pubsub.port';
-import { Logger } from '@libs/structure/domain/ports/logger.port';
+import { LoggerPort } from '@libs/structure/domain/ports/logger.port';
 import {
   DataWithPaginationMeta,
   FindManyPaginatedParams,
@@ -21,7 +21,7 @@ export abstract class BaseTypeormRepository<
   protected constructor(
     protected readonly repository: Repository<OrmEntity>,
     protected readonly mapper: BaseOrmMapper<Entity, OrmEntity>,
-    protected readonly logger: Logger,
+    protected readonly logger: LoggerPort,
     protected readonly eventPubSub: DomainEventsPubSubPort,
   ) {}
 

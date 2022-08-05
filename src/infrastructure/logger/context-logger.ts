@@ -1,4 +1,4 @@
-import { Logger as LoggerInterface } from '@libs/structure/domain/ports/logger.port';
+import { LoggerPort as LoggerInterface } from '@libs/structure/domain/ports/logger.port';
 import { Logger } from '@nestjs/common';
 
 export class ContextLogger implements LoggerInterface {

@@ -1,7 +1,7 @@
 import { UserOrmEntity } from '@components/users/database/orm-entities/user.orm-entity';
 import { UsersRepository } from '@components/users/database/repositories/users.repository';
 import { DomainEventsPubSubPort } from '@libs/structure/domain/ports/domain-events-pubsub.port';
-import { Logger } from '@libs/structure/domain/ports/logger.port';
+import { LoggerPort } from '@libs/structure/domain/ports/logger.port';
 import { UnitOfWorkPort } from '@libs/structure/domain/ports/unit-of-work.port';
 import { BaseTypeormUnitOfWork } from '@libs/structure/infrastructure/database/unit-of-work/base-typeorm.unit-of-work';
 import { Injectable } from '@nestjs/common';
@@ -16,7 +16,7 @@ export class TypeormUnitOfWork
 
   constructor(
     dataSource: DataSource,
-    logger: Logger,
+    logger: LoggerPort,
     private readonly eventPubSub: DomainEventsPubSubPort,
   ) {
     super(dataSource, logger);

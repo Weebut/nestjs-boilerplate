@@ -1,10 +1,10 @@
 import { BaseAggregateRoot } from '../base-classes/base-aggregate-root';
-import { Logger } from './logger.port';
+import { LoggerPort } from './logger.port';
 
 export interface DomainEventsPubSubPort {
   publishEvents(
     aggregate: BaseAggregateRoot<unknown>,
-    logger: Logger,
+    logger: LoggerPort,
     correlationId?: string,
   ): Promise<void>;
 }

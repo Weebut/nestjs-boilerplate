@@ -1,5 +1,5 @@
 import { BaseUnitOfWork } from '@libs/structure/domain/base-classes/base-unit-of-work';
-import { Logger } from '@libs/structure/domain/ports/logger.port';
+import { LoggerPort } from '@libs/structure/domain/ports/logger.port';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, EntityTarget, QueryRunner, Repository } from 'typeorm';
 import { IsolationLevel } from 'typeorm/driver/types/IsolationLevel';
@@ -20,7 +20,7 @@ export class BaseTypeormUnitOfWork implements BaseUnitOfWork {
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
-    private readonly logger: Logger,
+    private readonly logger: LoggerPort,
   ) {}
 
   private queryRunners: Map<string, QueryRunner> = new Map();
