@@ -6,6 +6,7 @@ import { TypeormConfigModule } from '@infrastructure/configs/typeorm/typeorm.mod
 import { UnitOfWorkModule } from '@infrastructure/database/unit-of-work/unit-of-work.module';
 import { DomainEventsPubSubModule } from '@infrastructure/domain-events-pubsub/domain-events-pubsub.module';
 import { Module } from '@nestjs/common';
+import { StrategiesModule } from './auth/strategies/strategies.module';
 import { NeutralControllersModule } from './controllers/neutral/neutral-controllers.module';
 import { V1ControllersModule } from './controllers/v1/v1-controllers.module';
 
@@ -14,6 +15,7 @@ import { V1ControllersModule } from './controllers/v1/v1-controllers.module';
     BullConfigModule,
     EnvironmentConfigModule,
     EventEmitterConfigModule,
+    StrategiesModule,
     TypeormConfigModule,
     UnitOfWorkModule,
     DomainEventsPubSubModule,
