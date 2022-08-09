@@ -23,13 +23,14 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Permissions } from 'src/auth/decorators/permissions.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { JwtOnlyGuard } from 'src/auth/guards/jwt-only.guard';
 import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
 import { usersRouteRoot } from './constants/route';
 import { FindUsersRequest } from './dtos/request/queries/find-users.request.dto';
 import { UserResponse } from './dtos/response/user.response.dto';
 
 @Controller({ version: v1, path: usersRouteRoot })
-@UseGuards(PermissionsGuard)
+@UseGuards(JwtOnlyGuard, PermissionsGuard)
 export class UsersController {
   constructor(
     private readonly commandBus: CommandBus,
