@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { PERMISSIONS } from '../decorators/permissions.decorator';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -10,7 +11,7 @@ export class PermissionsGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const requiredPermissions = this.reflector.get<string[]>(
-      'permissions',
+      PERMISSIONS,
       context.getHandler(),
     );
 
