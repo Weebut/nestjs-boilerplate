@@ -18,19 +18,15 @@ import {
   ParseUUIDPipe,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Permissions } from 'src/auth/decorators/permissions.decorator';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
-import { JwtOnlyGuard } from 'src/auth/guards/jwt-only.guard';
-import { PermissionsGuard } from 'src/auth/guards/permissions.guard';
 import { usersRouteRoot } from './constants/route';
 import { FindUsersRequest } from './dtos/request/queries/find-users.request.dto';
 import { UserResponse } from './dtos/response/user.response.dto';
 
 @Controller({ version: v1, path: usersRouteRoot })
-@UseGuards(JwtOnlyGuard, PermissionsGuard)
 export class UsersController {
   constructor(
     private readonly commandBus: CommandBus,
@@ -54,7 +50,7 @@ export class UsersController {
   }
 
   @Get()
-  @Permissions('read:users')
+  @Auth('read:users')
   async findUsers(@Query() queries: FindUsersRequest) {
     const query = new FindUsersQuery(queries);
     const result = await this.queryBus.execute(query);
@@ -63,7 +59,7 @@ export class UsersController {
   }
 
   @Get(':userId')
-  @Permissions('read:users')
+  @Auth('read:users')
   async findUser(@Param('userId', ParseUUIDPipe) userId: string) {
     const query = new FindOneUserQuery({ userId });
     const result = await this.queryBus.execute(query);
@@ -72,7 +68,7 @@ export class UsersController {
   }
 
   @Delete(':userId')
-  @Permissions('delete:users')
+  @Auth('delete:users')
   async delete(@Param('userId', ParseUUIDPipe) userId: string) {
     const command = new DeleteUserCommand({ userId });
     await this.commandBus.execute(command);
