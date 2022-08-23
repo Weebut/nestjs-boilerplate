@@ -22,6 +22,8 @@ jobs:
       nginx: ${{ steps.filter.outputs.nginx }}
       app: ${{ steps.filter.outputs.app }}
       services: ${{ steps.slack-message-creator.services }}
+      branch: ${{ steps.extract_branch.outputs.branch }}
+      stage: ${{ steps.stage.outputs.stage }}
     steps:
       - uses: actions/checkout@v3
       - name: Extract branch name
