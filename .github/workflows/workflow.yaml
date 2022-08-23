@@ -359,21 +359,15 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Install AWS CLI 2
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          which aws
-          sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-      - name: Add profile credentials to ~/.aws/credentials
-        run: |
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile init-infra
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile init-infra
-      - name: Get Password of ECR
-        id: ecr
-        shell: bash
-        run: |
-          aws ecr get-login-password --region ap-northeast-2 --profile init-infra | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
       - name: cache dotenv
         id: dotenv-cache
         uses: actions/cache@v3
