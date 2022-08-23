@@ -400,7 +400,7 @@ jobs:
         run: terraform plan -no-color
         continue-on-error: true
       - name: Terraform Apply
-        id: plan
+        id: apply
         working-directory: ./terraform/lightsail/deploy
         run: terraform apply -auto-approve
         continue-on-error: true
