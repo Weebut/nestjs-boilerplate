@@ -80,16 +80,40 @@ jobs:
           echo "::set-output name=slack-message::${SLACK_MESSAGE//$'\n'/'%0A'}"
           echo "::set-output name=services::${UPDATED_SOURCES}"
 
-      - name: Slack Notification for deployment
-        uses: rtCamp/action-slack-notify@v2
+      - name: Send GitHub Action trigger data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.21.0
+        with:
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "${{ steps.slack-message-creator.outputs.slack-message }}",
+              "attachments": [
+                {
+                  "pretext": "Deployment started",
+                  "color": '#ffae00',
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "short": true,
+                      "value": "In Progress"
+                    }
+                  ]
+                }
+              ],
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ steps.slack-message-creator.outputs.slack-message }}"
+                  }
+                }
+              ]
+            }
         env:
-          SLACK_CHANNEL: github_platform
-          SLACK_MESSAGE: '${{ steps.slack-message-creator.outputs.slack-message }}'
-          SLACK_TITLE: '메시지'
-          SLACK_COLOR: '#ffae00'
-          SLACK_USERNAME: GithubActionBot
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_FOOTER: ''
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
   prepare-dotenv:
     name: prepare dotenv file
@@ -214,7 +238,7 @@ jobs:
             }
           ]
           '
-          echo "$TFVARS" >> ./terraform/vars/dev.tfvars
+          echo "$TFVARS" >> ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars
       - name: Create dotenv .env for production
         shell: bash
         working-directory: .
@@ -319,7 +343,7 @@ jobs:
             }
           ]
           '
-          echo "$TFVARS" >> ./terraform/vars/prod.tfvars
+          echo "$TFVARS" >> ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars
       - name: cache dotenv
         id: dotenv-cache
         uses: actions/cache@v3
@@ -397,12 +421,12 @@ jobs:
       - name: Terraform Plan
         id: plan
         working-directory: ./terraform/lightsail/deploy
-        run: terraform plan -no-color
+        run: terraform plan -no-color -var-file="../../vars/${{needs.deploy-ready}}.tfvars"
         continue-on-error: true
       - name: Terraform Apply
         id: apply
         working-directory: ./terraform/lightsail/deploy
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var-file="../../vars/${{needs.deploy-ready}}.tfvars"
         continue-on-error: true
 
   deploy-end:
@@ -412,13 +436,38 @@ jobs:
     needs: [deploy-service]
     steps:
       - uses: actions/checkout@v3
-      - name: Slack Notification for deployment
-        uses: rtCamp/action-slack-notify@v2
+
+      - name: Send GitHub Action trigger data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.21.0
+        with:
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "배포가 완료되었습니다. 결과를 확인하세요",
+              "attachments": [
+                {
+                  "pretext": "Deployment started",
+                  "color": '#0037ff',
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "short": true,
+                      "value": "In Progress"
+                    }
+                  ]
+                }
+              ],
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "배포가 완료되었습니다. 결과를 확인하세요"
+                  }
+                }
+              ]
+            }
         env:
-          SLACK_CHANNEL: github_platform
-          SLACK_MESSAGE: '배포가 완료되었습니다. 결과를 확인하세요'
-          SLACK_TITLE: '메시지'
-          SLACK_COLOR: '#0037ff'
-          SLACK_USERNAME: GithubActionBot
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_FOOTER: ''
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
