@@ -340,7 +340,15 @@ jobs:
         env:
           cache-name: cache-dotenv-${{needs.deploy-ready.outputs.stage}}
         with:
-          path: '**/.env'
+          path: '.env'
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
+      - name: cache tfvars
+        id: tfvars-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-tfvars-${{needs.deploy-ready.outputs.stage}}
+        with:
+          path: './terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
 
   image-prepare:
@@ -374,7 +382,7 @@ jobs:
         env:
           cache-name: cache-dotenv-${{needs.deploy-ready.outputs.stage}}
         with:
-          path: '**/.env'
+          path: '.env'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
       - name: Build the stack
         run: TAG=${{steps.time.outputs.time}} docker compose build
@@ -409,7 +417,7 @@ jobs:
         env:
           cache-name: cache-dotenv-${{needs.deploy-ready.outputs.stage}}
         with:
-          path: '**/.env'
+          path: '.env'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
       - run: terraform init
         working-directory: ./terraform/lightsail/deploy
