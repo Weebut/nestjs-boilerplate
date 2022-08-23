@@ -154,7 +154,7 @@ jobs:
           echo "ECR_SERVER_REPOSITORY=$ECR_SERVER_REPOSITORY" >> .env
           echo "ECR_SERVER_NGINX_REPOSITORY=$ECR_SERVER_NGINX_REPOSITORY" >> .env
           echo "NODE_ENV=$NODE_ENV" >> .env
-          TFVARS = '
+          cat > ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars <<EOL
           environment = "dev"
           container_deployments = [
             {
@@ -229,8 +229,7 @@ jobs:
               }]
             }
           ]
-          '
-          echo "$TFVARS" >> ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars
+          EOL
       - name: Create dotenv .env for production
         shell: bash
         working-directory: .
@@ -259,7 +258,7 @@ jobs:
           echo "ECR_SERVER_REPOSITORY=$ECR_SERVER_REPOSITORY" >> .env
           echo "ECR_SERVER_NGINX_REPOSITORY=$ECR_SERVER_NGINX_REPOSITORY" >> .env
           echo "NODE_ENV=$NODE_ENV" >> .env
-          TFVARS = '
+          cat > ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars <<EOL
           environment = "prod"
           container_deployments = [
             {
@@ -334,8 +333,7 @@ jobs:
               }]
             }
           ]
-          '
-          echo "$TFVARS" >> ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars
+          EOL
       - name: cache dotenv
         id: dotenv-cache
         uses: actions/cache@v3
