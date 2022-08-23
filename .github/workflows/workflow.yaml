@@ -91,7 +91,7 @@ jobs:
               "attachments": [
                 {
                   "pretext": "Deployment started",
-                  "color": '#ffae00',
+                  "color": "#ffae00",
                   "fields": [
                     {
                       "title": "Status",
@@ -448,7 +448,7 @@ jobs:
               "attachments": [
                 {
                   "pretext": "Deployment started",
-                  "color": '#0037ff',
+                  "color": "#0037ff",
                   "fields": [
                     {
                       "title": "Status",
