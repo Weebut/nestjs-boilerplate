@@ -1,4 +1,4 @@
-name: Platform Backend Deploy
+name: Lightsail Deploy
 
 on:
   push:
@@ -55,9 +55,7 @@ jobs:
         id: slack-message-creator
         shell: bash
         run: |
-          SLACK_MESSAGE="
-          서버 배포가 트리거되었습니다.
-          다음과 같은 서비스가 배포됩니다 : "
+          SLACK_MESSAGE="서버 배포가 트리거되었습니다.\n다음과 같은 서비스가 배포됩니다 : \n"
 
           SOURCE_FLAGS=("${{ steps.filter.outputs.nginx }}" "${{ steps.filter.outputs.app }}")
           SOURCES=("nginx" "app")
@@ -66,18 +64,16 @@ jobs:
             echo ${SOURCE_FLAGS[i]}
             if [[ "${SOURCE_FLAGS[i]}" == "true" ]]; then
               echo "true"
-              SLACK_MESSAGE+="
-               - ${SOURCES[i]}"
+              SLACK_MESSAGE+=" - ${SOURCES[i]}\n"
               UPDATED_SOURCES+="${SOURCES[i]} "
             else
               echo "false"
             fi
           done
 
-          SLACK_MESSAGE+="
-          배포 도중 위 서비스가 잠깐(1분~) 멈출 수 있습니다"
+          SLACK_MESSAGE+="배포 도중 위 서비스가 잠깐(1분~) 멈출 수 있습니다"
 
-          echo "::set-output name=slack-message::${SLACK_MESSAGE//$'\n'/'%0A'}"
+          echo "::set-output name=slack-message::${SLACK_MESSAGE}"
           echo "::set-output name=services::${UPDATED_SOURCES}"
 
       - name: Send GitHub Action trigger data to Slack workflow
@@ -433,7 +429,7 @@ jobs:
     name: deploy end notification
     runs-on: ubuntu-latest
     if: ${{ always() }}
-    needs: [deploy-service]
+    needs: [deploy-service, deploy-ready]
     steps:
       - uses: actions/checkout@v3
 
