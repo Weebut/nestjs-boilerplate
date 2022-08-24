@@ -30,8 +30,10 @@ variable "container_services" {
   type    = list(object({
     name = string
     certificate_name = string
+    domain_name = string
+    alt_names = list(string)
+    domain_names = list(string)
     scale = number
     power = string
-    domain_names = list(string)
   }))
 }

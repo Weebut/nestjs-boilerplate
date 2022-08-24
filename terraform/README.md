@@ -39,3 +39,5 @@ Author: Jaemin Kim
 /path/to/nestjs-boilerplate % aws ecr get-login-password --region ap-northeast-2 --profile init-infra | docker login --username AWS --password-stdin 737930764590.dkr.ecr.ap-northeast-2.amazonaws.com
 
 ```
+
+각 terraform module 별 배포 순서는 ecr -> lightsail -> domain -> (직접 lightsail 콘솔에서 이미지 설정) -> lightsail/deploy 이다

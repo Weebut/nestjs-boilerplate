@@ -57,7 +57,7 @@ jobs:
         id: slack-message-creator
         shell: bash
         run: |
-          SLACK_MESSAGE="서버 배포가 트리거되었습니다.\n다음과 같은 서비스가 배포됩니다 : \n"
+          SLACK_MESSAGE=""
 
           SOURCE_FLAGS=("${{ steps.filter.outputs.nginx }}" "${{ steps.filter.outputs.app }}")
           SOURCES=("nginx" "app")
@@ -72,9 +72,6 @@ jobs:
               echo "false"
             fi
           done
-
-          SLACK_MESSAGE+="배포 도중 위 서비스가 잠깐(1분~) 멈출 수 있습니다"
-
           echo "::set-output name=slack-message::${SLACK_MESSAGE}"
           echo "::set-output name=services::${UPDATED_SOURCES}"
 
@@ -85,27 +82,29 @@ jobs:
           # For posting a rich message using Block Kit
           payload: |
             {
-              "text": "${{ steps.slack-message-creator.outputs.slack-message }}",
               "attachments": [
                 {
-                  "pretext": "Deployment started",
-                  "color": "#ffae00",
+                  "mrkdwn_in": ["text"],
+                  "color": "#9b9ba4",
+                  "pretext": "Deployment to <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}>",
+                  "text": "서버 배포가 시작되었습니다",
                   "fields": [
-                    {
-                      "title": "Status",
-                      "short": true,
-                      "value": "In Progress"
-                    }
-                  ]
-                }
-              ],
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "${{ steps.slack-message-creator.outputs.slack-message }}"
-                  }
+                      {
+                          "title": "배포 중인 서비스",
+                          "value": "${{steps.slack-message-creator.outputs.slack-message}}",
+                          "short": false
+                      },
+                      {
+                          "title": "Actor",
+                          "value": "<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
+                          "short": true
+                      },
+                      {
+                          "title": "Status",
+                          "value": "Started",
+                          "short": true
+                      },
+                  ],
                 }
               ]
             }
@@ -446,35 +445,38 @@ jobs:
     needs: [deploy-service, deploy-ready]
     steps:
       - uses: actions/checkout@v3
-
-      - name: Send GitHub Action trigger data to Slack workflow
-        id: slack
+      - name: status save - failure
+        id: status_1
+        if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           # For posting a rich message using Block Kit
           payload: |
             {
-              "text": "배포가 완료되었습니다. 결과를 확인하세요",
               "attachments": [
                 {
-                  "pretext": "Deployment Ended",
-                  "color": "#0037ff",
-                  "fields": [
-                    {
-                      "title": "Status",
-                      "short": true,
-                      "value": "End"
-                    }
-                  ]
+                  "mrkdwn_in": ["text"],
+                  "color": "#cc0000",
+                  "text": "배포가 실패했습니다",
                 }
-              ],
-              "blocks": [
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: status save - success
+        id: status_1
+        if: ${{ !failure() }}
+        uses: slackapi/slack-github-action@v1.21.0
+        with:
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "attachments": [
                 {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "배포가 완료되었습니다. 결과를 확인하세요"
-                  }
+                  "mrkdwn_in": ["text"],
+                  "color": "#8fce00",
+                  "text": "배포가 완료되었습니다",
                 }
               ]
             }

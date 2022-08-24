@@ -27,3 +27,15 @@ variable "lightsail_zone_id" {
   type    = string
   default = "Z06260262XZM84B2WPLHH"
 }
+
+variable "container_services" {
+  type    = list(object({
+    name = string
+    certificate_name = string
+    domain_name = string
+    alt_names = list(string)
+    domain_names = list(string)
+    scale = number
+    power = string
+  }))
+}

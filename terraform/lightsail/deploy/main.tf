@@ -33,7 +33,7 @@ data "terraform_remote_state" "lightsail" {
   backend = "s3"
   config = {
     bucket               = "init-tf-state-bucket"
-    key                  = "lightsail"
+    key                  = "environments/${var.environment}/lightsail"
     region = "ap-northeast-2"
   }
 }

@@ -3,5 +3,5 @@ output "db_host" {
 }
 
 output "services" {
-  value = aws_lightsail_container_service.services
+  value = awslightsail_container_service.services
 }

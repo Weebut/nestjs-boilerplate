@@ -24,10 +24,13 @@ provider "aws" {
   profile = var.profile
 }
 
-provider "aws" {
+provider "awslightsail" {
+  region  = var.region
+}
+
+provider "awslightsail" {
   alias = "global"
-  region  = "us-east-1"
-  profile = var.profile
+  region = "us-east-1"
 }
 
 locals {
@@ -38,31 +41,35 @@ locals {
   }
 }
 
-resource "aws_lightsail_domain" "target" {
-  provider = aws.global
-  for_each = toset([ for domain in distinct(flatten([ for deployment in var.container_services : deployment["domain_names"]])) : domain ])
-  domain_name = each.key
-}
-
-resource "aws_lightsail_container_service" "services" {
+# create a new Lightsail container service
+resource "awslightsail_container_service" "services" {
   for_each = { for service in var.container_services : service.name => service }
   name        = "${local.name}-${each.value.name}"
   power       = each.value.power
   scale       = each.value.scale
   is_disabled = false
+  tags = local.tags
+}
 
+resource "awslightsail_certificate" "cert" {
+  for_each = { for service in var.container_services : service.name => service }
+  name        = each.value.certificate_name
+  domain_name = each.value.domain_name
+  subject_alternative_names = each.value.alt_names
+}
+
+resource "awslightsail_container_public_domain_names" "domains" {
+  for_each = { for service in var.container_services : service.name => service }
+  container_service_name = "${local.name}-${each.key}"
   public_domain_names {
     certificate {
-      # should create certificate
       certificate_name = each.value.certificate_name
       domain_names = each.value.domain_names
     }
   }
-
-  tags = local.tags
   depends_on = [
-    aws_lightsail_domain.target,
-    # awslightsail_certificate.target
+    awslightsail_certificate.cert,
+    awslightsail_container_service.services,
   ]
 }
 
