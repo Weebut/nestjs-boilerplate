@@ -446,8 +446,8 @@ jobs:
       - name: status save - failure
         if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
-        update-ts: ${{ needs.deploy-ready.outputs.ts }}
         with:
+          update-ts: ${{ needs.deploy-ready.outputs.ts }}
           # For posting a rich message using Block Kit
           payload: |
             {
@@ -483,6 +483,7 @@ jobs:
         if: ${{ !failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
+          update-ts: ${{ needs.deploy-ready.outputs.ts }}
           # For posting a rich message using Block Kit
           payload: |
             {
