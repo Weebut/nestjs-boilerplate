@@ -21,9 +21,10 @@ jobs:
     outputs:
       nginx: ${{ steps.filter.outputs.nginx }}
       app: ${{ steps.filter.outputs.app }}
-      services: ${{ steps.slack-message-creator.services }}
+      services: ${{ steps.slack-message-creator.outputs.services }}
       branch: ${{ steps.extract_branch.outputs.branch }}
       stage: ${{ steps.stage.outputs.stage }}
+      slack-message: ${{ steps.slack-message-creator.outputs.slack-message }}
       ts: ${{ steps.slack.outputs.ts }}
     steps:
       - uses: actions/checkout@v3
@@ -86,12 +87,12 @@ jobs:
               "text": "서버 배포가 시작되었습니다",
               "attachments": [
                 {
-                  "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
+                  "pretext": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> Deployment started by ${{github.ACTOR}}",
                   fields": [
                     {
-                      "title": "Stage",
+                      "title": "Services",
                       "short": false,
-                      "value": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}>"
+                      "value": "${{steps.slack.outputs.slack-message}}"
                     },
                     {
                       "title": "Actor",
@@ -444,7 +445,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: status save - failure
-        if: ${{ failure() }}
+        if: ${{ !failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
@@ -458,9 +459,9 @@ jobs:
                   "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
                   fields": [
                     {
-                      "title": "Stage",
+                      "title": "Services",
                       "short": false,
-                      "value": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}>"
+                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
                     },
                     {
                       "title": "Actor",
@@ -480,7 +481,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: status save - success
-        if: ${{ !failure() }}
+        if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
@@ -494,9 +495,9 @@ jobs:
                   "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
                   fields": [
                     {
-                      "title": "Stage",
+                      "title": "Services",
                       "short": false,
-                      "value": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}>"
+                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
                     },
                     {
                       "title": "Actor",
