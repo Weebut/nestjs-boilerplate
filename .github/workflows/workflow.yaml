@@ -426,6 +426,8 @@ jobs:
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
       - run: terraform init
         working-directory: ./terraform/lightsail/deploy
+      - run: terraform workspace new ${{needs.deploy-ready.outputs.stage}} && terraform workspace select ${{needs.deploy-ready.outputs.stage}}
+        working-directory: ./terraform/lightsail/deploy
       - name: Terraform Plan
         id: plan
         working-directory: ./terraform/lightsail/deploy

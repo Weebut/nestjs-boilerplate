@@ -13,20 +13,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "4.27.0"
     }
-    awslightsail = {
-      source = "deyoungtech/awslightsail"
-    }
   }
 }
 
 provider "aws" {
   region  = var.region
-  profile = var.profile
-}
-
-provider "aws" {
-  alias = "global"
-  region  = "us-east-1"
   profile = var.profile
 }
 
