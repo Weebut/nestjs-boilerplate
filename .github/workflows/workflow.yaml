@@ -92,7 +92,7 @@ jobs:
                     {
                       "title": "Services",
                       "short": false,
-                      "value": "${{steps.slack.outputs.slack-message}}"
+                      "value": "${{steps.slack-message-creator.outputs.slack-message}}"
                     },
                     {
                       "title": "Actor",
