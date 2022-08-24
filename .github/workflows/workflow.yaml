@@ -416,25 +416,25 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile init-infra
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile init-infra
-      - name: cache dotenv
-        id: dotenv-cache
+      - name: cache tfvars
+        id: tfvars-cache
         uses: actions/cache@v3
         env:
-          cache-name: cache-dotenv-${{needs.deploy-ready.outputs.stage}}
+          cache-name: cache-tfvars-${{needs.deploy-ready.outputs.stage}}
         with:
-          path: '.env'
+          path: './terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
       - run: terraform init
         working-directory: ./terraform/lightsail/deploy
       - name: Terraform Plan
         id: plan
         working-directory: ./terraform/lightsail/deploy
-        run: terraform plan -no-color -var-file="../../vars/${{needs.deploy-ready}}.tfvars"
+        run: terraform plan -no-color -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
         continue-on-error: true
       - name: Terraform Apply
         id: apply
         working-directory: ./terraform/lightsail/deploy
-        run: terraform apply -auto-approve -var-file="../../vars/${{needs.deploy-ready}}.tfvars"
+        run: terraform apply -auto-approve -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
         continue-on-error: true
 
   deploy-end:
