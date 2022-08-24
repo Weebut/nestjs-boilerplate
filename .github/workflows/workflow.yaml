@@ -431,12 +431,10 @@ jobs:
         id: plan
         working-directory: ./terraform/lightsail/deploy
         run: terraform plan -no-color -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
-        continue-on-error: true
       - name: Terraform Apply
         id: apply
         working-directory: ./terraform/lightsail/deploy
         run: terraform apply -auto-approve -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
-        continue-on-error: true
 
   deploy-end:
     name: deploy end notification
@@ -446,7 +444,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: status save - failure
-        id: status_1
         if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
@@ -465,7 +462,6 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: status save - success
-        id: status_1
         if: ${{ !failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
