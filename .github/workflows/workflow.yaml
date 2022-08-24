@@ -385,12 +385,16 @@ jobs:
           path: '.env'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
       - name: Build the stack
+        working-directory: .
         run: TAG=${{steps.time.outputs.time}} docker compose build
       - name: Push the stack
+        working-directory: .
         run: docker compose push ${{needs.deploy-ready.outputs.services}}
       - name: Build the stack latest
+        working-directory: .
         run: docker compose build
       - name: Push the stack latest
+        working-directory: .
         run: docker compose push ${{needs.deploy-ready.outputs.services}}
 
   deploy-service:
