@@ -24,6 +24,7 @@ jobs:
       services: ${{ steps.slack-message-creator.services }}
       branch: ${{ steps.extract_branch.outputs.branch }}
       stage: ${{ steps.stage.outputs.stage }}
+      ts: ${{ steps.slack.outputs.ts }}
     steps:
       - uses: actions/checkout@v3
       - name: Extract branch name
@@ -82,40 +83,25 @@ jobs:
           # For posting a rich message using Block Kit
           payload: |
             {
+              "text": "서버 배포가 시작되었습니다",
               "attachments": [
                 {
-                  "blocks": [
+                  "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
+                  fields": [
                     {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "서버 배포가 시작되었습니다"
-                      }
+                      "title": "Stage",
+                      "short": false,
+                      "value": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}>"
                     },
                     {
-                      "type": "section",
-                      "fields": [
-                        {
-                          "type": "mrkdwn",
-                          "text": "*배포 중인 서비스*\n${{steps.slack-message-creator.outputs.slack-message}}"
-                        }
-                      ]
+                      "title": "Actor",
+                      "short": true,
+                      "value": "<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>"
                     },
                     {
-                      "type": "divider"
-                    },
-                    {
-                      "type": "section",
-                      "fields": [
-                        {
-                          "type": "mrkdwn",
-                          "text": "*Actor*\n<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>"
-                        },
-                        {
-                          "type": "mrkdwn",
-                          "text": "*Status*\nStarted"
-                        }
-                      ]
+                      "title": "Status",
+                      "short": true,
+                      "value": "In Progress"
                     }
                   ]
                 }
@@ -440,6 +426,7 @@ jobs:
         working-directory: ./terraform/lightsail/deploy
       - run: terraform workspace new ${{needs.deploy-ready.outputs.stage}} && terraform workspace select ${{needs.deploy-ready.outputs.stage}}
         working-directory: ./terraform/lightsail/deploy
+        continue-on-error: true
       - name: Terraform Plan
         id: plan
         working-directory: ./terraform/lightsail/deploy
@@ -459,21 +446,32 @@ jobs:
       - name: status save - failure
         if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
+        update-ts: ${{ needs.deploy-ready.outputs.ts }}
         with:
           # For posting a rich message using Block Kit
           payload: |
             {
+              "text": "서버 배포가 실패했습니다",
               "attachments": [
                 {
                   "color": "#cc0000",
-                  "blocks": [
+                  "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
+                  fields": [
                     {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "서버 배포에 실패했습니다"
-                      }
+                      "title": "Stage",
+                      "short": false,
+                      "value": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}>"
                     },
+                    {
+                      "title": "Actor",
+                      "short": true,
+                      "value": "<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>"
+                    },
+                    {
+                      "title": "Status",
+                      "short": true,
+                      "value": "Failed"
+                    }
                   ]
                 }
               ]
@@ -488,17 +486,27 @@ jobs:
           # For posting a rich message using Block Kit
           payload: |
             {
+              "text": "서버 배포가 완료되었습니다"
               "attachments": [
                 {
                   "color": "#8fce00",
-                  "blocks": [
+                  "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
+                  fields": [
                     {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "서버 배포가 완료되었습니다"
-                      }
+                      "title": "Stage",
+                      "short": false,
+                      "value": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}>"
                     },
+                    {
+                      "title": "Actor",
+                      "short": true,
+                      "value": "<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>"
+                    },
+                    {
+                      "title": "Status",
+                      "short": true,
+                      "value": "Success"
+                    }
                   ]
                 }
               ]
