@@ -132,3 +132,11 @@ dist
 http/
 
 .vscode/
+
+.env.*
+!.env.example
+
+terraform.tfstate*
+terraform/vars/**
+!terraform/vars/example.tfvars
+.terraform*

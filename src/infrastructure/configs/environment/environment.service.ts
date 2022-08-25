@@ -14,15 +14,15 @@ export class EnvironmentConfigService {
   }
 
   getDatabaseUser(): string {
-    return this.configService.get<string>('DATABASE_USER');
+    return this.configService.get<string>('MYSQL_USER');
   }
 
   getDatabasePassword(): string {
-    return this.configService.get<string>('DATABASE_PASSWORD');
+    return this.configService.get<string>('MYSQL_PASSWORD');
   }
 
   getDatabaseName(): string {
-    return this.configService.get<string>('DATABASE_NAME');
+    return this.configService.get<string>('MYSQL_DATABASE');
   }
 
   getDatabaseSync(): boolean {

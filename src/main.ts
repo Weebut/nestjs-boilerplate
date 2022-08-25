@@ -11,7 +11,7 @@ import { LoggerService } from './common/logger/logger.service';
 config();
 
 async function bootstrap() {
-  const port = process.env.PORT ?? 3000;
+  const port = process.env.API_PORT ?? 3000;
 
   const app = await NestFactory.create(AppModule);
 
