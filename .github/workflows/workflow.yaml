@@ -554,7 +554,7 @@ jobs:
           # For posting a rich message using Block Kit
           payload: |
             {
-              "text": "서버 배포가 완료되었습니다"
+              "text": "서버 배포가 완료되었습니다",
               "attachments": [
                 {
                   "color": "#8fce00",
