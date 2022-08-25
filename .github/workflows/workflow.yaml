@@ -54,7 +54,6 @@ jobs:
             nginx:
               - "nginx/**"
               - ".github/workflows/workflow.yaml"
-
       - name: Prepare Slack Message
         id: slack-message-creator
         shell: bash
@@ -76,7 +75,6 @@ jobs:
           done
           echo "::set-output name=slack-message::${SLACK_MESSAGE}"
           echo "::set-output name=services::${UPDATED_SOURCES}"
-
       - name: Send GitHub Action trigger data to Slack workflow
         id: slack
         uses: slackapi/slack-github-action@v1.21.0
@@ -415,6 +413,7 @@ jobs:
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile init-infra
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile init-infra
+          cat ~/.aws/credentials
       - name: cache tfvars
         id: tfvars-cache
         uses: actions/cache@v3
