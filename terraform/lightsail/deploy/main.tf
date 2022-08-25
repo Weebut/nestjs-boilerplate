@@ -6,7 +6,6 @@ terraform {
     region               = "ap-northeast-2"
     encrypt              = true
     dynamodb_table       = "terraform-lock"
-    profile              = "init-infra"
   }
   required_providers {
     aws = {
@@ -18,8 +17,6 @@ terraform {
 
 provider "aws" {
   region  = var.region
-  profile = var.profile
-  shared_credentials_files = ["~/.aws/credentials"]
 }
 
 locals {
