@@ -113,6 +113,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Configure AWS credentials
+        if: ${{ success() }}
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -327,6 +328,7 @@ jobs:
           ]
           EOL
       - name: cache dotenv
+        if: ${{ success() }}
         id: dotenv-cache
         uses: actions/cache@v3
         env:
@@ -335,6 +337,7 @@ jobs:
           path: '.env'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
       - name: cache tfvars
+        if: ${{ success() }}
         id: tfvars-cache
         uses: actions/cache@v3
         env:
@@ -342,102 +345,8 @@ jobs:
         with:
           path: './terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
-
-  image-prepare:
-    name: image preparation start
-    runs-on: ubuntu-latest
-    needs: [prepare-dotenv, deploy-ready]
-    if: ${{ (needs.deploy-ready.outputs.app == 'true')|| (needs.deploy-ready.outputs.nginx == 'true') }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Get Time
-        id: time
-        uses: nanzm/get-time-action@v1.1
-        with:
-          timeZone: 9
-          format: 'YYYY-MM-DD-HH-mm-ss'
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      - name: cache dotenv
-        id: dotenv-cache
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-dotenv-${{needs.deploy-ready.outputs.stage}}
-        with:
-          path: '.env'
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
-      - name: Build the stack
-        working-directory: .
-        run: TAG=${{steps.time.outputs.time}} docker compose build
-      - name: Push the stack
-        working-directory: .
-        run: TAG=${{steps.time.outputs.time}} docker compose push ${{needs.deploy-ready.outputs.services}}
-      - name: Build the stack latest
-        working-directory: .
-        run: docker compose build
-      - name: Push the stack latest
-        working-directory: .
-        run: docker compose push ${{needs.deploy-ready.outputs.services}}
-
-  deploy-service:
-    name: service deployment
-    runs-on: ubuntu-latest
-    needs: [image-prepare, deploy-ready]
-    if: ${{ (needs.deploy-ready.outputs.app == 'true')|| (needs.deploy-ready.outputs.nginx == 'true') }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: cache tfvars
-        id: tfvars-cache
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-tfvars-${{needs.deploy-ready.outputs.stage}}
-        with:
-          path: './terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars'
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
-      - run: terraform init
-        working-directory: ./terraform/lightsail/deploy
-      - run: terraform workspace new ${{needs.deploy-ready.outputs.stage}}
-        working-directory: ./terraform/lightsail/deploy
-        continue-on-error: true
-      - run: terraform workspace select ${{needs.deploy-ready.outputs.stage}}
-        working-directory: ./terraform/lightsail/deploy
-        continue-on-error: true
-      - name: Terraform Plan
-        id: plan
-        working-directory: ./terraform/lightsail/deploy
-        run: terraform plan -no-color -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
-      - name: Terraform Apply
-        id: apply
-        working-directory: ./terraform/lightsail/deploy
-        run: terraform apply -auto-approve -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
-
-  deploy-end:
-    name: deploy end notification
-    runs-on: ubuntu-latest
-    if: ${{ always() }}
-    needs: [deploy-service, deploy-ready]
-    steps:
-      - uses: actions/checkout@v3
       - name: status save - failure
-        if: ${{ jobs.deploy-ready.result != "success" || jobs.prepare-dotenv.result != "success" || jobs.image-prepare.result != "success" || jobs.deploy-service.result != "success" }}
+        if: ${{ job.status == "failure" }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
@@ -467,6 +376,177 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+  image-prepare:
+    name: image preparation start
+    runs-on: ubuntu-latest
+    needs: [prepare-dotenv, deploy-ready]
+    if: ${{ (needs.deploy-ready.outputs.app == 'true')|| (needs.deploy-ready.outputs.nginx == 'true') }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        if: ${{ success() }}
+        uses: docker/setup-qemu-action@v2
+      - name: Get Time
+        if: ${{ success() }}
+        id: time
+        uses: nanzm/get-time-action@v1.1
+        with:
+          timeZone: 9
+          format: 'YYYY-MM-DD-HH-mm-ss'
+      - name: Set up Docker Buildx
+        if: ${{ success() }}
+        uses: docker/setup-buildx-action@v2
+      - name: Configure AWS credentials
+        if: ${{ success() }}
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Login to Amazon ECR
+        if: ${{ success() }}
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: cache dotenv
+        if: ${{ success() }}
+        id: dotenv-cache
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-dotenv-${{needs.deploy-ready.outputs.stage}}
+        with:
+          path: '.env'
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
+      - name: Build the stack
+        if: ${{ success() }}
+        working-directory: .
+        run: TAG=${{steps.time.outputs.time}} docker compose build
+      - name: Push the stack
+        if: ${{ success() }}
+        working-directory: .
+        run: TAG=${{steps.time.outputs.time}} docker compose push ${{needs.deploy-ready.outputs.services}}
+      - name: Build the stack latest
+        if: ${{ success() }}
+        working-directory: .
+        run: docker compose build
+      - name: Push the stack latest
+        if: ${{ success() }}
+        working-directory: .
+        run: docker compose push ${{needs.deploy-ready.outputs.services}}
+      - name: status save - failure
+        if: ${{ job.status == "failure" }}
+        uses: slackapi/slack-github-action@v1.21.0
+        with:
+          update-ts: ${{ needs.deploy-ready.outputs.ts }}
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "서버 배포가 실패했습니다",
+              "attachments": [
+                {
+                  "color": "#cc0000",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
+                  "fields": [
+                    {
+                      "title": "Services",
+                      "short": true,
+                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
+                    },
+                    {
+                      "title": "Status",
+                      "short": true,
+                      "value": "Failed"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+  deploy-service:
+    name: service deployment
+    runs-on: ubuntu-latest
+    needs: [image-prepare, deploy-ready]
+    if: ${{ (needs.deploy-ready.outputs.app == 'true')|| (needs.deploy-ready.outputs.nginx == 'true') }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        if: ${{ success() }}
+      - name: Configure AWS Credentials
+        if: ${{ success() }}
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: cache tfvars
+        id: tfvars-cache
+        if: ${{ success() }}
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-tfvars-${{needs.deploy-ready.outputs.stage}}
+        with:
+          path: './terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars'
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
+      - run: terraform init
+        if: ${{ success() }}
+        working-directory: ./terraform/lightsail/deploy
+      - run: terraform workspace new ${{needs.deploy-ready.outputs.stage}}
+        working-directory: ./terraform/lightsail/deploy
+        continue-on-error: true
+      - run: terraform workspace select ${{needs.deploy-ready.outputs.stage}}
+        working-directory: ./terraform/lightsail/deploy
+        continue-on-error: true
+      - name: Terraform Plan
+        id: plan
+        if: ${{ success() }}
+        working-directory: ./terraform/lightsail/deploy
+        run: terraform plan -no-color -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
+      - name: Terraform Apply
+        id: apply
+        if: ${{ success() }}
+        working-directory: ./terraform/lightsail/deploy
+        run: terraform apply -auto-approve -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
+      - name: status save - failure
+        if: ${{ job.status == "failure" }}
+        uses: slackapi/slack-github-action@v1.21.0
+        with:
+          update-ts: ${{ needs.deploy-ready.outputs.ts }}
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "서버 배포가 실패했습니다",
+              "attachments": [
+                {
+                  "color": "#cc0000",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
+                  "fields": [
+                    {
+                      "title": "Services",
+                      "short": true,
+                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
+                    },
+                    {
+                      "title": "Status",
+                      "short": true,
+                      "value": "Failed"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+  deploy-end:
+    name: deploy end notification
+    runs-on: ubuntu-latest
+    needs: [deploy-service, deploy-ready]
+    steps:
+      - uses: actions/checkout@v3
       - name: status save - success
         if: ${{ jobs.deploy-ready.result == "success" && jobs.prepare-dotenv.result == "success" && jobs.image-prepare.result == "success" && jobs.deploy-service.result == "success" }}
         uses: slackapi/slack-github-action@v1.21.0
