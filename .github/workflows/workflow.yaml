@@ -82,20 +82,15 @@ jobs:
           # For posting a rich message using Block Kit
           payload: |
             {
-              "text": "서버 배포가 시작되었습니다",
+              "text": "서버 배포가 시작되었습니다. 약 10분 정도가 소요됩니다",
               "attachments": [
                 {
-                  "pretext": "<${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> Deployment started by ${{github.ACTOR}}",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
                   "fields": [
                     {
                       "title": "Services",
-                      "short": false,
-                      "value": "${{steps.slack-message-creator.outputs.slack-message}}"
-                    },
-                    {
-                      "title": "Actor",
                       "short": true,
-                      "value": "<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>"
+                      "value": "${{steps.slack-message-creator.outputs.slack-message}}"
                     },
                     {
                       "title": "Status",
@@ -442,7 +437,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: status save - failure
-        if: ${{ !failure() }}
+        if: ${{ jobs.deploy-ready.result != "success" || jobs.prepare-dotenv.result != "success" || jobs.image-prepare.result != "success" || jobs.deploy-service.result != "success" }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
@@ -453,17 +448,12 @@ jobs:
               "attachments": [
                 {
                   "color": "#cc0000",
-                  "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
                   "fields": [
                     {
                       "title": "Services",
-                      "short": false,
-                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
-                    },
-                    {
-                      "title": "Actor",
                       "short": true,
-                      "value": "<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>"
+                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
                     },
                     {
                       "title": "Status",
@@ -478,7 +468,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       - name: status save - success
-        if: ${{ failure() }}
+        if: ${{ jobs.deploy-ready.result == "success" && jobs.prepare-dotenv.result == "success" && jobs.image-prepare.result == "success" && jobs.deploy-service.result == "success" }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
@@ -489,17 +479,12 @@ jobs:
               "attachments": [
                 {
                   "color": "#8fce00",
-                  "pretext": "${{needs.deploy-ready.outputs.stage}} Deployment started by ${{github.ACTOR}}",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
                   "fields": [
                     {
                       "title": "Services",
-                      "short": false,
-                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
-                    },
-                    {
-                      "title": "Actor",
                       "short": true,
-                      "value": "<https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>"
+                      "value": "${{needs.deploy-ready.outputs.slack-message}}"
                     },
                     {
                       "title": "Status",
