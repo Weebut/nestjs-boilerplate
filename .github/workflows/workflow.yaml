@@ -548,7 +548,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: status save - success
-        if: ${{ jobs.deploy-ready.result == "success" && jobs.prepare-dotenv.result == "success" && jobs.image-prepare.result == "success" && jobs.deploy-service.result == "success" }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
