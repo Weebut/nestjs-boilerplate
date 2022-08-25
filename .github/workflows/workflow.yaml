@@ -185,7 +185,7 @@ jobs:
               },
               {
                 name = "nginx"
-                image = "$ECR_REGISTRY/$ECR_SERVER_NGINX_REPOSITORY:$NODE_VERSION-$ENV-latest"
+                image = "$ECR_REGISTRY/$ECR_SERVER_NGINX_REPOSITORY:$NGINX_VERSION-$ENV-latest"
                 command = []
                 environment = {
                   API_HOST = "localhost"
