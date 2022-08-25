@@ -150,7 +150,7 @@ jobs:
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
           echo "ECR_SERVER_REPOSITORY=$ECR_SERVER_REPOSITORY" >> .env
           echo "ECR_SERVER_NGINX_REPOSITORY=$ECR_SERVER_NGINX_REPOSITORY" >> .env
-          echo "NODE_ENV=$NODE_ENV" >> .env
+          echo "ENV=$ENV" >> .env
           cat > ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars <<EOL
           environment = "dev"
           container_deployments = [
@@ -254,7 +254,7 @@ jobs:
           echo "ECR_REGISTRY=$ECR_REGISTRY" >> .env
           echo "ECR_SERVER_REPOSITORY=$ECR_SERVER_REPOSITORY" >> .env
           echo "ECR_SERVER_NGINX_REPOSITORY=$ECR_SERVER_NGINX_REPOSITORY" >> .env
-          echo "NODE_ENV=$NODE_ENV" >> .env
+          echo "ENV=$ENV" >> .env
           cat > ./terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars <<EOL
           environment = "prod"
           container_deployments = [
@@ -289,7 +289,7 @@ jobs:
               },
               {
                 name = "nginx"
-                image = "$ECR_REGISTRY/$ECR_SERVER_NGINX_REPOSITORY:$NODE_VERSION-$ENV-latest"
+                image = "$ECR_REGISTRY/$ECR_SERVER_NGINX_REPOSITORY:$NGINX_VERSION-$ENV-latest"
                 command = []
                 environment = {
                   API_HOST = "localhost"
