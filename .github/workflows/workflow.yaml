@@ -346,7 +346,7 @@ jobs:
           path: './terraform/vars/${{needs.deploy-ready.outputs.stage}}.tfvars'
           key: ${{ runner.os }}-${{ env.cache-name }}-${{needs.deploy-ready.outputs.stage}}-${{ github.SHA }}
       - name: status save - failure
-        if: ${{ failure() }} && ${{ job.status == 'failure' }}
+        if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
@@ -434,7 +434,7 @@ jobs:
         working-directory: .
         run: docker compose push ${{needs.deploy-ready.outputs.services}}
       - name: status save - failure
-        if: ${{ failure() }} && ${{ job.status == 'failure' }}
+        if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
@@ -510,7 +510,7 @@ jobs:
         working-directory: ./terraform/lightsail/deploy
         run: terraform apply -auto-approve -var-file="../../vars/${{needs.deploy-ready.outputs.stage}}.tfvars"
       - name: status save - failure
-        if: ${{ failure() }} && ${{ job.status == 'failure' }}
+        if: ${{ failure() }}
         uses: slackapi/slack-github-action@v1.21.0
         with:
           update-ts: ${{ needs.deploy-ready.outputs.ts }}
