@@ -357,7 +357,7 @@ jobs:
               "attachments": [
                 {
                   "color": "#cc0000",
-                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
                   "fields": [
                     {
                       "title": "Services",
@@ -445,7 +445,7 @@ jobs:
               "attachments": [
                 {
                   "color": "#cc0000",
-                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
                   "fields": [
                     {
                       "title": "Services",
@@ -521,7 +521,7 @@ jobs:
               "attachments": [
                 {
                   "color": "#cc0000",
-                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
                   "fields": [
                     {
                       "title": "Services",
@@ -558,7 +558,7 @@ jobs:
               "attachments": [
                 {
                   "color": "#8fce00",
-                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{steps.stage.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
+                  "pretext": "Deployment of <${{github.SERVER_URL}}/${{github.REPOSITORY}}/actions/runs/${{github.RUN_ID}}|${{needs.deploy-ready.outputs.stage}}> stage started by <https://github.com/${{github.ACTOR}}|${{github.ACTOR}}>",
                   "fields": [
                     {
                       "title": "Services",
